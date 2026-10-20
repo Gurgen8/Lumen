@@ -282,7 +282,9 @@ div.cat-poster { display: flex; align-items: flex-end; padding: 10px; font-famil
 .free-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .free-body h3 { font-size: 1.7rem; font-weight: 800; }
 .free-body p { margin: 0; color: var(--muted); font-size: 1rem; }
-.free-body .btn { align-self: flex-start; margin-top: auto; }
+.free-body > .btn, .free-body > .film-links { align-self: flex-start; margin-top: auto; }
+.free-body .film-links { padding-top: 8px; }
+.watch-frame video { width: 100%; height: 100%; display: block; background: #000; }
 .watch-dlg { width: min(1100px, calc(100% - 32px)); padding: 0; border: 1px solid var(--line); background: #000; color: #fff; border-radius: 2px; }
 .watch-dlg::backdrop { background: rgba(8,2,4,.88); backdrop-filter: blur(3px); }
 .watch-dlg .dlg-close { top: -50px; right: 0; }
@@ -443,7 +445,7 @@ try {
   <div class="wrap">
     <div class="sec-head">
       <h2>Films gratuits</h2>
-      <p>À regarder chez vous, gratuitement, en version française.</p>
+      <p>À regarder chez vous, gratuitement.</p>
     </div>
     <div class="free-grid">
       <article class="free-card">
@@ -455,6 +457,20 @@ try {
           <h3>The Nun</h3>
           <p>Elle n'a jamais vraiment disparu… Épouvante, drame. Film complet en VF.</p>
           <button class="btn" type="button" data-watch="2TcdsqzUMf0" data-title="The Nun">Voir le film</button>
+        </div>
+      </article>
+      <article class="free-card">
+        <div class="free-thumb">
+          <img src="https://i.ytimg.com/vi/o7xO_ciIEeA/hqdefault.jpg" alt="Image du film La Nuit des morts-vivants" loading="lazy">
+          <span class="chip">Gratuit · Sans pub</span>
+        </div>
+        <div class="free-body">
+          <h3>La Nuit des morts-vivants</h3>
+          <p>George A. Romero, 1968. Le film fondateur du film de zombies. Version originale, noir et blanc, 1 h 36. Domaine public.</p>
+          <div class="film-links">
+            <button class="btn" type="button" data-video="https://archive.org/download/Night.Of.The.Living.Dead_1080p/NightOfTheLivingDead_PS3.mp4" data-title="La Nuit des morts-vivants">Voir le film</button>
+            <button class="btn ghost" type="button" data-watch="o7xO_ciIEeA" data-title="La Nuit des morts-vivants – bande-annonce">Bande-annonce</button>
+          </div>
         </div>
       </article>
     </div>
@@ -598,6 +614,7 @@ const FILMS = [
   { id: "descent", tr: "OSGiSZWFOtE", t: "The Descent", d: "Neil Marshall", y: 2005, min: 99, r: 2.39, fmt: "35 mm", v: "VOST" },
   { id: "rec", tr: "S79ZZtCGNFE", t: "[REC]", d: "Jaume Balagueró et Paco Plaza", y: 2007, min: 78, r: 1.85, fmt: "35 mm", v: "VOST" },
   { id: "morse", tr: "DbLlxfYycbc", t: "Morse", d: "Tomas Alfredson", y: 2008, min: 115, r: 2.39, fmt: "35 mm", v: "VOST" },
+  { id: "annabelle", tr: "AA2pFq9pFTA", t: "Annabelle", d: "John R. Leonetti", y: 2014, min: 99, r: 2.39, fmt: "DCP 4K", v: "VOST" },
   { id: "grave", tr: "dNZcqVVXTcA", t: "Grave", d: "Julia Ducournau", y: 2016, min: 99, r: 2.39, fmt: "DCP 4K", v: "VF" },
 ];
 const byId = Object.fromEntries(FILMS.map(f => [f.id, f]));
@@ -607,7 +624,7 @@ const DAYS = [
   { k: "mer", n: 21, l: "Mercredi", s: [["hereditary","14:00","V"],["getout","16:15","L"],["hereditary","20:30","V"],["witch","21:15","L"]] },
   { k: "jeu", n: 22, l: "Jeudi", s: [["grave","18:00","V"],["itfollows","20:45","L"],["hereditary","21:00","V"]] },
   { k: "ven", n: 23, l: "Vendredi", s: [["morse","19:00","V"],["descent","20:30","L"],["hereditary","16:30","L"]] },
-  { k: "sam", n: 24, l: "Samedi", s: [["getout","11:00","L"],["hereditary","15:00","V"],["descent","18:00","L"],["witch","19:30","V"],["rec","23:45","V"]] },
+  { k: "sam", n: 24, l: "Samedi", s: [["getout","11:00","L"],["hereditary","15:00","V"],["descent","18:00","L"],["witch","19:30","V"],["annabelle","21:45","L"],["rec","23:45","V"]] },
   { k: "dim", n: 25, l: "Dimanche", s: [["getout","11:00","L"],["grave","14:30","V"],["itfollows","17:00","L"],["hereditary","20:30","V"]] },
   { k: "lun", n: 26, l: "Lundi", s: [["witch","18:30","V"],["descent","20:45","L"]], reduced: true },
   { k: "mar", n: 27, l: "Mardi", s: [["hereditary","18:00","V"],["itfollows","20:30","L"],["grave","21:00","V"]] },
@@ -675,7 +692,7 @@ function renderFilms() {
         <div class="credits">${esc(f.d)}, ${f.y}</div>
         <div class="film-links">
           <button class="btn" type="button" data-watch="${f.tr}" data-title="${esc(f.t)} – bande-annonce">Bande-annonce HD</button>
-          <button class="btn ghost" type="button" data-where="${id}">Regarder en HD</button>
+          ${WATCH_URLS[id] ? `<button class="btn ghost" type="button" data-where="${id}">Regarder en HD</button>` : ""}
         </div>
       </div>
     </article>`;
@@ -916,6 +933,13 @@ document.addEventListener("click", e => {
     allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
   watchDlg.showModal();
 });
+// Film hébergé hors YouTube (ex. Internet Archive) : lecteur vidéo natif, donc aucune publicité.
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-video]");
+  if (!b) return;
+  watchFrame.innerHTML = `<video src="${esc(b.dataset.video)}" controls autoplay playsinline preload="metadata" aria-label="${esc(b.dataset.title)}"></video>`;
+  watchDlg.showModal();
+});
 watchDlg.addEventListener("click", e => { if (e.target === watchDlg || e.target.closest("[data-close]")) watchDlg.close(); });
 watchDlg.addEventListener("close", () => { watchFrame.innerHTML = ""; });
 
@@ -930,6 +954,8 @@ const WATCH_URLS = {
   rec: "https://test.ru",
   morse: "https://test.ru",
   grave: "https://test.ru",
+  annabelle: "https://www.youtube.com/watch?v=rgM2-2E8yuU",
+  
 };
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-where]");

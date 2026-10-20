@@ -6,6 +6,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;800;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script>
+// Thème noir / blanc : on applique le choix enregistré avant l'affichage pour éviter un flash.
+(() => {
+  let t = null;
+  try { t = localStorage.getItem("lumen-theme"); } catch {}
+  const dark = t !== "light"; // noir par défaut
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  document.documentElement.classList.toggle("is-dark", dark);
+})();
+</script>
 <style>
 /* Layout : la salle obscure. Un écran qui épouse le format réel de chaque film, un faisceau de projecteur, un programme lu comme une feuille de cabine. */
 :root {
@@ -63,6 +73,15 @@ header.nav {
 .logo { font-family: var(--f-display); font-weight: 900; font-size: 1.7rem; letter-spacing: .06em; text-decoration: none; display: flex; align-items: center; gap: 10px; }
 .logo i { width: 12px; height: 12px; border-radius: 50%; background: var(--tungsten); box-shadow: 0 0 14px var(--tungsten); }
 .nav nav { display: flex; gap: 22px; }
+.theme-btn {
+  flex: none; width: 40px; height: 40px; display: grid; place-items: center; cursor: pointer;
+  background: none; color: var(--ink); border: 1px solid var(--line); border-radius: 50%;
+}
+.theme-btn:hover { border-color: var(--tungsten); color: var(--tungsten); }
+.theme-btn svg { width: 18px; height: 18px; }
+.theme-btn .sun { display: none; }
+.is-dark .theme-btn .sun { display: block; }
+.is-dark .theme-btn .moon { display: none; }
 /* Recherche */
 .search { position: relative; flex: 0 1 300px; min-width: 0; margin-left: auto; }
 .search input { width: 100%; padding: 10px 12px 10px 36px; font: 1rem var(--f-body); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 2px; }
@@ -253,6 +272,23 @@ div.cat-poster { display: flex; align-items: flex-end; padding: 10px; font-famil
 .dlg-people b { color: var(--ink); font-weight: 500; }
 .dlg-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 @media (max-width: 600px) { .dlg-body { grid-template-columns: 1fr; margin-top: -40px; padding: 0 18px 22px; } .dlg-body .poster { width: 120px; } .dlg-body h3 { padding-top: 0; } }
+/* Films gratuits */
+.film-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.free-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+.free-card { border: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; }
+.free-thumb { position: relative; aspect-ratio: 16 / 9; background: #120609; overflow: hidden; }
+.free-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.free-thumb .chip { position: absolute; top: 10px; left: 10px; background: var(--velvet); color: var(--on-velvet); border-color: var(--velvet); }
+.free-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.free-body h3 { font-size: 1.7rem; font-weight: 800; }
+.free-body p { margin: 0; color: var(--muted); font-size: 1rem; }
+.free-body .btn { align-self: flex-start; margin-top: auto; }
+.watch-dlg { width: min(1100px, calc(100% - 32px)); padding: 0; border: 1px solid var(--line); background: #000; color: #fff; border-radius: 2px; }
+.watch-dlg::backdrop { background: rgba(8,2,4,.88); backdrop-filter: blur(3px); }
+.watch-dlg .dlg-close { top: -50px; right: 0; }
+.watch-dlg[open] { overflow: visible; }
+.watch-frame { aspect-ratio: 16 / 9; width: 100%; }
+.watch-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
 .q-results li.group { display: block; cursor: default; padding: 10px 8px 4px; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 .q-results li.group:hover { background: none; }
 
@@ -346,10 +382,15 @@ try {
     </div>
     <nav aria-label="Principale">
       <a href="#programme">Programme</a>
+      <a href="#gratuit">Gratuit</a>
       <a href="#cycles">Cycles</a>
       <a href="#filmotheque">Filmothèque</a>
       <a href="#tarifs">Tarifs</a>
     </nav>
+    <button class="theme-btn" type="button" id="theme-btn" aria-label="Passer en mode sombre">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
     <a class="btn" href="#programme">Réserver</a>
   </div>
 </header>
@@ -397,6 +438,33 @@ try {
     </div>
   </div>
 </section>
+
+<section class="block" id="gratuit" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Films gratuits</h2>
+      <p>À regarder chez vous, gratuitement, en version française.</p>
+    </div>
+    <div class="free-grid">
+      <article class="free-card">
+        <div class="free-thumb">
+          <img src="https://i.ytimg.com/vi/2TcdsqzUMf0/hqdefault.jpg" alt="Image du film The Nun" loading="lazy">
+          <span class="chip">Gratuit</span>
+        </div>
+        <div class="free-body">
+          <h3>The Nun</h3>
+          <p>Elle n'a jamais vraiment disparu… Épouvante, drame. Film complet en VF.</p>
+          <button class="btn" type="button" data-watch="2TcdsqzUMf0" data-title="The Nun">Voir le film</button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<dialog class="watch-dlg" id="watch-dlg" aria-label="Lecture du film">
+  <button class="dlg-close" type="button" aria-label="Fermer" data-close>×</button>
+  <div class="watch-frame"></div>
+</dialog>
 
 <section class="block" id="cycles" style="padding-top:0">
   <div class="wrap">
@@ -523,14 +591,14 @@ try {
 <script>
 const PRICE = 9.5, REDUCED = 7;
 const FILMS = [
-  { id: "hereditary", t: "Hérédité", d: "Ari Aster", y: 2018, min: 127, r: 2.0, fmt: "DCP 4K", v: "VOST" },
-  { id: "getout", t: "Get Out", d: "Jordan Peele", y: 2017, min: 104, r: 2.39, fmt: "DCP 4K", v: "VOST" },
-  { id: "witch", t: "The Witch", d: "Robert Eggers", y: 2015, min: 92, r: 1.66, fmt: "DCP 4K", v: "VOST" },
-  { id: "itfollows", t: "It Follows", d: "David Robert Mitchell", y: 2014, min: 100, r: 2.39, fmt: "DCP 4K", v: "VOST" },
-  { id: "descent", t: "The Descent", d: "Neil Marshall", y: 2005, min: 99, r: 2.39, fmt: "35 mm", v: "VOST" },
-  { id: "rec", t: "[REC]", d: "Jaume Balagueró et Paco Plaza", y: 2007, min: 78, r: 1.85, fmt: "35 mm", v: "VOST" },
-  { id: "morse", t: "Morse", d: "Tomas Alfredson", y: 2008, min: 115, r: 2.39, fmt: "35 mm", v: "VOST" },
-  { id: "grave", t: "Grave", d: "Julia Ducournau", y: 2016, min: 99, r: 2.39, fmt: "DCP 4K", v: "VF" },
+  { id: "hereditary", tr: "lkGhK2MAljo", t: "Hérédité", d: "Ari Aster", y: 2018, min: 127, r: 2.0, fmt: "DCP 4K", v: "VOST" },
+  { id: "getout", tr: "D0_Oljr4qZM", t: "Get Out", d: "Jordan Peele", y: 2017, min: 104, r: 2.39, fmt: "DCP 4K", v: "VOST" },
+  { id: "witch", tr: "vyRMbE4kPq8", t: "The Witch", d: "Robert Eggers", y: 2015, min: 92, r: 1.66, fmt: "DCP 4K", v: "VOST" },
+  { id: "itfollows", tr: "AsoUG9ScJnc", t: "It Follows", d: "David Robert Mitchell", y: 2014, min: 100, r: 2.39, fmt: "DCP 4K", v: "VOST" },
+  { id: "descent", tr: "OSGiSZWFOtE", t: "The Descent", d: "Neil Marshall", y: 2005, min: 99, r: 2.39, fmt: "35 mm", v: "VOST" },
+  { id: "rec", tr: "S79ZZtCGNFE", t: "[REC]", d: "Jaume Balagueró et Paco Plaza", y: 2007, min: 78, r: 1.85, fmt: "35 mm", v: "VOST" },
+  { id: "morse", tr: "DbLlxfYycbc", t: "Morse", d: "Tomas Alfredson", y: 2008, min: 115, r: 2.39, fmt: "35 mm", v: "VOST" },
+  { id: "grave", tr: "dNZcqVVXTcA", t: "Grave", d: "Julia Ducournau", y: 2016, min: 99, r: 2.39, fmt: "DCP 4K", v: "VF" },
 ];
 const byId = Object.fromEntries(FILMS.map(f => [f.id, f]));
 
@@ -605,6 +673,10 @@ function renderFilms() {
       <div class="film-body">
         <h3>${esc(f.t)}</h3>
         <div class="credits">${esc(f.d)}, ${f.y}</div>
+        <div class="film-links">
+          <button class="btn" type="button" data-watch="${f.tr}" data-title="${esc(f.t)} – bande-annonce">Bande-annonce HD</button>
+          <button class="btn ghost" type="button" data-where="${id}">Regarder en HD</button>
+        </div>
       </div>
     </article>`;
   }).join("");
@@ -820,6 +892,57 @@ $("#film-dlg").addEventListener("click", e => {
   if (e.target === dlg || e.target.closest("[data-close]")) dlg.close();
   const p = e.target.closest("[data-prog]");
   if (p) { dlg.close(); goToFilm(byId[p.dataset.prog]); }
+});
+
+// Bouton thème noir / blanc
+const themeBtn = $("#theme-btn");
+const syncThemeBtn = () => themeBtn.setAttribute("aria-label",
+  document.documentElement.classList.contains("is-dark") ? "Passer en mode clair" : "Passer en mode sombre");
+syncThemeBtn();
+themeBtn.addEventListener("click", () => {
+  const dark = !document.documentElement.classList.contains("is-dark");
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  document.documentElement.classList.toggle("is-dark", dark);
+  try { localStorage.setItem("lumen-theme", dark ? "dark" : "light"); } catch {}
+  syncThemeBtn();
+});
+
+// Films gratuits : le lecteur YouTube n'est chargé qu'à l'ouverture, et vidé à la fermeture pour couper le son.
+const watchDlg = $("#watch-dlg"), watchFrame = watchDlg.querySelector(".watch-frame");
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-watch]");
+  if (!b) return;
+  watchFrame.innerHTML = `<iframe src="https://www.youtube.com/embed/${b.dataset.watch}?autoplay=1&rel=0&vq=hd1080&modestbranding=1" title="${esc(b.dataset.title)}"
+    allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  watchDlg.showModal();
+});
+watchDlg.addEventListener("click", e => { if (e.target === watchDlg || e.target.closest("[data-close]")) watchDlg.close(); });
+watchDlg.addEventListener("close", () => { watchFrame.innerHTML = ""; });
+
+// « Regarder en HD » : ouvre le film dans la fenêtre-lecteur.
+// Remplacez chaque lien par l'adresse du film (une page qui accepte d'être intégrée en iframe).
+const WATCH_URLS = {
+  hereditary: "https://test.ru",
+  getout: "https://www.youtube.com/watch?v=VDP163X0Vwc",
+  witch: "https://test.ru",
+  itfollows: "https://test.ru",
+  descent: "https://test.ru",
+  rec: "https://test.ru",
+  morse: "https://test.ru",
+  grave: "https://test.ru",
+};
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-where]");
+  if (!b) return;
+  const f = byId[b.dataset.where];
+  let url = WATCH_URLS[f.id];
+  if (!url) return;
+  // Un lien YouTube normal (watch?v=…, youtu.be/…, shorts/…) est converti en lecteur intégré, comme pour les films gratuits.
+  const yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/);
+  if (yt) url = `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0&vq=hd1080&modestbranding=1`;
+  watchFrame.innerHTML = `<iframe src="${esc(url)}" title="${esc(f.t)}"
+    allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  watchDlg.showModal();
 });
 
 // Pages de livre

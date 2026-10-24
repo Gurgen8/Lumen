@@ -1,11 +1,12 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cinéma Lumen</title>
+<title>Lumen</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Cpath d='M4 30C14 14 50 14 60 30C50 46 14 46 4 30z' fill='%23f2ece4'/%3E%3Ccircle cx='32' cy='30' r='12' fill='%23e50914'/%3E%3Ccircle cx='32' cy='30' r='5.5' fill='%23000'/%3E%3Ccircle cx='28' cy='26' r='2.5' fill='%23fff'/%3E%3Cpath d='M10 28l6 1M12 34l6-2M54 28l-6 1M52 34l-6-2' stroke='%23e50914' stroke-width='1.5' stroke-linecap='round'/%3E%3Cg fill='%23b0060f'%3E%3Cpath d='M20 38c2 1 4 1.6 6 2v9a3 3 0 0 1-6 0z'/%3E%3Ccircle cx='23' cy='56' r='2.6'/%3E%3Cpath d='M33 41.6h4v13a2 2 0 0 1-4 0z'/%3E%3Ccircle cx='35' cy='61' r='2'/%3E%3Cpath d='M42 39.5c1.5-.5 3-1.2 4.5-2v5.5a2.25 2.25 0 0 1-4.5 0z'/%3E%3C/g%3E%3C/svg%3E">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;800;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Oswald:wght@700&family=Inter:wght@400;500;600;700&display=swap">
 <script>
 // Thème noir / blanc : on applique le choix enregistré avant l'affichage pour éviter un flash.
 (() => {
@@ -17,104 +18,128 @@
 })();
 </script>
 <style>
-/* Layout : la salle obscure. Un écran qui épouse le format réel de chaque film, un faisceau de projecteur, un programme lu comme une feuille de cabine. */
+/* Lumen : plateforme de streaming d'horreur. Grande affiche en tête, puis des rangées de films qui défilent. */
 :root {
-  --bg: #e8e6ea;          /* écran argenté au repos */
-  --surface: #f6f5f7;
-  --ink: #1e1418;
-  --muted: #5f5258;
-  --line: #cfc8cd;
-  --velvet: #8e1b2b;      /* fauteuils */
-  --tungsten: #b5781a;    /* lampe du projecteur */
-  --beam: rgba(181,120,26,.18);
-  --on-velvet: #fbf3f0;
-  --f-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
-  --f-body: "Newsreader", Georgia, "Times New Roman", serif;
-  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --bg: #f5f5f1;
+  --surface: #ffffff;
+  --ink: #141414;
+  --muted: #5c5c5c;
+  --line: #dcdcdc;
+  --velvet: #e50914;      /* rouge de la marque */
+  --on-velvet: #ffffff;
+  --f-display: "Big Shoulders Display", "Oswald", "Arial Narrow", Impact, sans-serif; /* Oswald pour le cyrillique */
+  --f-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #160e11; --surface: #21161a; --ink: #efe8e2; --muted: #a8979d; --line: #3a2a30;
-    --velvet: #c23447; --tungsten: #f2c879; --beam: rgba(242,200,121,.13); --on-velvet: #fff6f2;
+    --bg: #141414; --surface: #1f1f1f; --ink: #ffffff; --muted: #b3b3b3; --line: #333333;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #160e11; --surface: #21161a; --ink: #efe8e2; --muted: #a8979d; --line: #3a2a30;
-  --velvet: #c23447; --tungsten: #f2c879; --beam: rgba(242,200,121,.13); --on-velvet: #fff6f2;
+  --bg: #141414; --surface: #1f1f1f; --ink: #ffffff; --muted: #b3b3b3; --line: #333333;
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
+html { scroll-padding-top: 72px; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
-  background: var(--bg); color: var(--ink);
-  font-family: var(--f-body); font-size: 1.125rem; line-height: 1.55;
+  margin: 0; background: var(--bg); color: var(--ink); overflow-x: clip;
+  font-family: var(--f-body); font-size: 1rem; line-height: 1.5;
 }
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
-.wrap {
-  max-width: 1180px; margin-inline: auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
+.wrap, .pad {
+  padding-left: max(16px, 4vw, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, 4vw, env(safe-area-inset-right, 0px));
 }
 a { color: inherit; }
-:focus-visible { outline: 2px solid var(--tungsten); outline-offset: 3px; }
-h1, h2, h3 { font-family: var(--f-display); text-transform: uppercase; line-height: .92; margin: 0; text-wrap: balance; letter-spacing: .01em; }
-.mono { font-family: var(--f-mono); font-size: .78rem; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
-.label { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
 
-/* Navigation */
+/* Boutons façon lecteur */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none;
+  font: 600 1.05rem/1 var(--f-body); padding: 12px 24px 12px 20px; border: 0; border-radius: 4px;
+  background: var(--velvet); color: var(--on-velvet);
+}
+.btn svg { width: 22px; height: 22px; flex: none; }
+.btn:hover { filter: brightness(1.12); }
+.btn.play { background: #fff; color: #000; }
+.btn.play:hover { background: rgba(255,255,255,.78); filter: none; }
+.btn.info { background: rgba(109,109,110,.7); color: #fff; }
+.btn.info:hover { background: rgba(109,109,110,.45); filter: none; }
+
+/* Navigation : transparente sur l'affiche, opaque quand on fait défiler */
 header.nav {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+  position: fixed; inset: 0 0 auto; z-index: 20; padding-top: env(safe-area-inset-top, 0px);
+  background: linear-gradient(to bottom, rgba(0,0,0,.75), transparent); color: #fff;
+  transition: background-color .3s ease;
 }
-.nav .wrap { display: flex; align-items: center; gap: 24px; padding-block: 14px; }
-.logo { font-family: var(--f-display); font-weight: 900; font-size: 1.7rem; letter-spacing: .06em; text-decoration: none; display: flex; align-items: center; gap: 10px; }
-.logo i { width: 12px; height: 12px; border-radius: 50%; background: var(--tungsten); box-shadow: 0 0 14px var(--tungsten); }
-.nav nav { display: flex; gap: 22px; }
+header.nav.scrolled { background-color: #141414; }
+:root[data-theme="light"] header.nav.scrolled { background-color: #141414; }
+.nav .wrap { display: flex; align-items: center; gap: 28px; padding-block: 14px; }
+.logo { font-family: var(--f-display); font-weight: 900; font-size: 2rem; letter-spacing: .06em; text-decoration: none; display: flex; align-items: center; gap: 10px; color: var(--velvet); }
+.logo i { width: 12px; height: 12px; border-radius: 50%; background: var(--velvet); box-shadow: 0 0 14px var(--velvet); }
+.nav nav { display: flex; gap: 20px; }
+.nav nav a { font-size: .92rem; text-decoration: none; color: #e5e5e5; }
+.nav nav a:hover { color: #b3b3b3; }
 .theme-btn {
-  flex: none; width: 40px; height: 40px; display: grid; place-items: center; cursor: pointer;
-  background: none; color: var(--ink); border: 1px solid var(--line); border-radius: 50%;
+  flex: none; width: 38px; height: 38px; display: grid; place-items: center; cursor: pointer;
+  background: none; color: #fff; border: 1px solid rgba(255,255,255,.35); border-radius: 50%;
 }
-.theme-btn:hover { border-color: var(--tungsten); color: var(--tungsten); }
+.theme-btn:hover { border-color: #fff; }
 .theme-btn svg { width: 18px; height: 18px; }
 .theme-btn .sun { display: none; }
 .is-dark .theme-btn .sun { display: block; }
 .is-dark .theme-btn .moon { display: none; }
+.lang-pick { position: relative; flex: none; display: flex; align-items: center; }
+.lang-pick .flag { position: absolute; left: 10px; font-size: 1.15rem; line-height: 1; pointer-events: none; }
+.lang-pick select {
+  appearance: none; cursor: pointer; font: 500 .9rem var(--f-body); color: #fff;
+  background: rgba(0,0,0,.6) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23fff'/%3E%3C/svg%3E") right 10px center / 9px no-repeat;
+  border: 1px solid rgba(255,255,255,.5); border-radius: 2px; padding: 8px 28px 8px 34px;
+}
+.lang-pick select:hover { border-color: #fff; }
+.lang-pick option { color: #000; background: #fff; }
+@media (max-width: 760px) { .nav nav { display: none; } .nav .wrap { gap: 10px; } }
+@media (max-width: 560px) { .lang-pick select { width: 42px; padding: 8px 0; color: transparent; background-image: none; } .lang-pick .flag { left: 11px; } .lang-pick option { color: #000; } }
+
 /* Recherche */
-.search { position: relative; flex: 0 1 300px; min-width: 0; margin-left: auto; }
-.search input { width: 100%; padding: 10px 12px 10px 36px; font: 1rem var(--f-body); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 2px; }
-.search input::placeholder { color: var(--muted); }
+.search { position: relative; flex: 0 1 280px; min-width: 0; margin-left: auto; }
+.search input { width: 100%; padding: 9px 12px 9px 36px; font: .95rem var(--f-body); background: rgba(0,0,0,.6); color: #fff; border: 1px solid rgba(255,255,255,.5); border-radius: 2px; }
+.search input::placeholder { color: #b3b3b3; }
 .search input::-webkit-search-cancel-button { cursor: pointer; }
-.search > svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); pointer-events: none; }
-.q-results { position: absolute; top: calc(100% + 6px); right: 0; width: max(100%, min(360px, calc(100vw - 32px))); margin: 0; padding: 6px; list-style: none;
-  background: var(--surface); border: 1px solid var(--line); box-shadow: 0 24px 48px -20px rgba(0,0,0,.6); max-height: 70vh; overflow-y: auto; }
+.search > svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: #e5e5e5; pointer-events: none; }
+.q-results { position: absolute; top: calc(100% + 6px); right: 0; width: max(100%, min(360px, calc(100vw - 32px))); margin: 0; padding: 6px; list-style: none; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); box-shadow: 0 24px 48px -20px rgba(0,0,0,.6); max-height: 70vh; overflow-y: auto; border-radius: 4px; }
 .q-results li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: center; padding: 8px; cursor: pointer; border-radius: 2px; }
 .q-results li[aria-selected="true"], .q-results li:hover { background: color-mix(in srgb, var(--velvet) 16%, transparent); }
 .q-results img { width: 40px; aspect-ratio: 2 / 3; object-fit: cover; display: block; }
-.q-results b { display: block; font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: 1.15rem; line-height: 1; }
-.q-results .who { display: block; font-size: .9rem; color: var(--muted); font-style: italic; }
-.q-results .when { display: block; font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--tungsten); margin-top: 2px; }
+.q-results b { display: block; font-weight: 600; }
+.q-results .who { display: block; font-size: .85rem; color: var(--muted); }
 .q-results li.empty { display: block; cursor: default; color: var(--muted); font-size: .95rem; }
-.q-results li.empty:hover { background: none; }
-.film.hit { animation: hit 1.8s ease-out; }
-@keyframes hit { 0%, 30% { background: color-mix(in srgb, var(--velvet) 22%, transparent); } 100% { background: transparent; } }
-.nav nav a { font-family: var(--f-mono); font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; text-decoration: none; color: var(--muted); }
-.nav nav a:hover { color: var(--ink); }
-.btn {
-  font: 500 .82rem/1 var(--f-mono); text-transform: uppercase; letter-spacing: .1em;
-  border: 0; cursor: pointer; padding: 13px 18px; border-radius: 2px;
-  background: var(--velvet); color: var(--on-velvet); text-decoration: none; display: inline-block;
-}
-.btn:hover { filter: brightness(1.08); }
-.btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
-@media (max-width: 760px) { .nav nav { display: none; } .search { flex: 1 1 auto; } }
-@media (max-width: 480px) { .nav .btn { display: none; } .nav .wrap { gap: 14px; } }
+.q-results li.empty:hover, .q-results li.group:hover { background: none; }
+.q-results li.group { display: block; cursor: default; padding: 10px 8px 4px; font-size: .7rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 
-/* Hero */
-.hero { position: relative; overflow: hidden; padding-block: 104px 72px; }
-/* Sang qui coule du haut de l'écran : formes fusionnées par un filtre « goo » + reflet spéculaire */
+/* Grande affiche */
+.billboard {
+  position: relative; min-height: min(90vh, 860px); display: flex; align-items: center; overflow: hidden;
+  background: #000 var(--bb) center 25% / cover no-repeat; color: #fff;
+}
+.billboard::before { content: ""; position: absolute; inset: 0; background: linear-gradient(77deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.35) 45%, transparent 75%); }
+.billboard::after { content: ""; position: absolute; inset: auto 0 0; height: 30%; background: linear-gradient(to top, var(--bg), transparent); }
+.bb-content { position: relative; z-index: 3; max-width: 640px; padding-top: 80px; padding-bottom: 12vh; }
+.bb-tag { display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #e5e5e5; }
+.bb-tag b { color: var(--velvet); font-family: var(--f-display); font-size: 1.6rem; letter-spacing: .04em; }
+.billboard h1 { font-family: var(--f-display); font-weight: 900; text-transform: uppercase; font-size: clamp(4rem, 12vw, 9rem); line-height: .85; margin: 10px 0 16px; text-shadow: 0 4px 30px rgba(0,0,0,.5); }
+.bb-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-weight: 500; color: #e5e5e5; margin-bottom: 14px; }
+.bb-meta .match { color: #46d369; font-weight: 700; }
+.bb-meta .badge { border: 1px solid rgba(255,255,255,.6); padding: 0 6px; font-size: .8rem; border-radius: 2px; }
+.bb-syn { font-size: clamp(1rem, 1.6vw, 1.3rem); line-height: 1.45; max-width: 46ch; margin: 0 0 24px; text-shadow: 0 2px 8px rgba(0,0,0,.6); }
+.bb-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* Sang qui coule du haut de l'affiche : formes fusionnées par un filtre « goo » + reflet spéculaire */
 .blood { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
 .blood svg { display: block; position: absolute; inset: 0; }
 .dr-stem { transform-box: fill-box; transform-origin: 50% 0; animation: stem var(--d) cubic-bezier(.25,.7,.3,1) var(--dl) both; }
@@ -128,242 +153,117 @@ header.nav {
   86% { transform: translateY(14px) scale(.85, 1.3); animation-timing-function: cubic-bezier(.5,0,1,.5); }
   100% { opacity: 1; transform: translateY(var(--fall)) scale(.8, 1.35); }
 }
-.beam {
-  position: absolute; inset: -10% -20% 0 auto; width: 90%; pointer-events: none;
-  background: conic-gradient(from 238deg at 100% 0%, transparent 0deg, var(--beam) 14deg, transparent 34deg);
-  animation: flicker 4.2s infinite steps(1);
+
+/* Rangées de films */
+.rows { position: relative; z-index: 4; margin-top: -9vh; padding-bottom: 40px; }
+.row { margin-bottom: 44px; }
+.row h2 { font-size: clamp(1.15rem, 1.8vw, 1.5rem); font-weight: 700; margin-bottom: 12px; }
+.row-wrap { position: relative; }
+.track {
+  display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  padding-block: 18px; margin-block: -18px; scroll-padding-inline: max(16px, 4vw);
 }
-@keyframes flicker { 0%,100%{opacity:1} 41%{opacity:.82} 43%{opacity:1} 77%{opacity:.9} }
-.hero-grid { position: relative; display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
-.hero h1 { font-size: clamp(3.4rem, 9vw, 7.4rem); font-weight: 900; }
-.hero h1 em { font-style: normal; color: var(--velvet); }
-.hero p.lede { max-width: 34ch; font-size: 1.3rem; color: var(--muted); margin: 22px 0 30px; }
-.hero .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
-.screen-card { min-width: 0; }
-.screen {
-  aspect-ratio: 1.66; max-width: 100%; position: relative; overflow: hidden;
-  background:
-    radial-gradient(120% 90% at 30% 40%, #c8322f 0%, #6e0f1a 45%, #1b0a0d 100%);
-  color: #f9e9d8; display: flex; flex-direction: column; justify-content: flex-end; padding: 22px;
-  box-shadow: 0 30px 60px -30px rgba(0,0,0,.6);
+.track::-webkit-scrollbar { display: none; }
+.tile {
+  flex: 0 0 auto; position: relative; padding: 0; border: 0; background: var(--surface); color: #fff; cursor: pointer;
+  border-radius: 4px; overflow: hidden; scroll-snap-align: start; font: inherit; text-align: left;
+  transition: transform .25s ease, box-shadow .25s ease;
 }
-.screen > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: blur(1.5px) saturate(1.1); transform: scale(1.04); }
-.screen::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(20,4,6,.92) 0%, rgba(20,4,6,.35) 55%, rgba(20,4,6,.1) 100%); }
-.screen::after { /* grain */
-  content: ""; position: absolute; inset: 0; opacity: .18; mix-blend-mode: overlay;
-  background-image: repeating-radial-gradient(circle at 17% 23%, #fff 0 1px, transparent 1px 3px);
+.tile:hover, .tile:focus-visible { transform: scale(1.07); z-index: 2; box-shadow: 0 14px 30px -10px rgba(0,0,0,.8); }
+.tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.tile.poster { width: clamp(130px, 15vw, 210px); aspect-ratio: 2 / 3; }
+.tile.wide { width: clamp(240px, 26vw, 360px); aspect-ratio: 16 / 9; }
+.tile .shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.85), transparent 55%); }
+.tile .t-name { position: absolute; left: 12px; right: 12px; bottom: 10px; font-family: var(--f-display); font-weight: 900; text-transform: uppercase; font-size: 1.4rem; line-height: .95; }
+.tile .t-free { position: absolute; top: 8px; left: 8px; background: var(--velvet); color: #fff; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 7px; border-radius: 2px; }
+.arrow {
+  position: absolute; top: 0; bottom: 0; width: max(16px, 4vw); z-index: 3; border: 0; cursor: pointer;
+  background: rgba(20,20,20,.55); color: #fff; font-size: 2.2rem; opacity: 0; transition: opacity .2s;
 }
-.screen .big { font-family: var(--f-display); font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.6rem); text-transform: uppercase; line-height: .9; position: relative; z-index: 1; }
-.screen .sub { font-family: var(--f-body); font-style: italic; position: relative; z-index: 1; opacity: .85; }
-.screen .ratio-tag { position: absolute; top: 14px; right: 14px; z-index: 1; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .1em; border: 1px solid currentColor; padding: 3px 7px; opacity: .8; }
-.screen-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px; color: var(--muted); }
-.screen-meta b { color: var(--ink); font-weight: 500; }
-@media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; gap: 36px; } .beam { width: 140%; } }
+.arrow.prev { left: 0; } .arrow.next { right: 0; }
+.row-wrap:hover .arrow, .arrow:focus-visible { opacity: 1; }
+.arrow:hover { background: rgba(20,20,20,.8); }
+@media (hover: none) { .arrow { display: none; } }
 
-/* Pellicule défilante */
-.strip { background: var(--ink); color: var(--bg); overflow: hidden; position: relative; padding-block: 18px; }
-.strip::before, .strip::after { content: ""; position: absolute; left: 0; right: 0; height: 8px; background: repeating-linear-gradient(90deg, transparent 0 10px, var(--bg) 10px 22px); opacity: .9; }
-.strip::before { top: 4px; } .strip::after { bottom: 4px; }
-.strip-track { display: flex; gap: 40px; width: max-content; animation: roll 48s linear infinite; font-family: var(--f-display); font-weight: 800; font-size: 1.5rem; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
-.strip-track span::after { content: "✦"; margin-left: 40px; color: var(--tungsten); }
-@keyframes roll { to { transform: translateX(-50%); } }
-
-/* Sections */
-section.block { padding-block: 88px; }
-.sec-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
-.sec-head h2 { font-size: clamp(2.6rem, 6vw, 4.4rem); font-weight: 900; }
-.sec-head p { max-width: 42ch; color: var(--muted); margin: 0; }
-
-/* Programme */
-.days { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 26px; scrollbar-width: thin; }
-.day {
-  flex: 0 0 auto; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer;
-  padding: 10px 16px; border-radius: 2px; text-align: left; font-family: var(--f-mono);
-}
-.day b { display: block; font-family: var(--f-display); font-size: 1.5rem; font-weight: 800; line-height: 1; }
-.day small { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-.day[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.day[aria-selected="true"] small { color: inherit; opacity: .7; }
-
-.prog-layout { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: start; }
-.films { display: grid; gap: 0; border-top: 1px solid var(--line); min-width: 0; }
-.film { display: grid; grid-template-columns: 130px 1fr; gap: 24px; padding-block: 24px; border-bottom: 1px solid var(--line); align-items: start; }
-.poster { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; display: block; background: color-mix(in srgb, var(--ink) 10%, transparent); box-shadow: 0 14px 28px -16px rgba(0,0,0,.7); }
-.film-body { min-width: 0; }
-.film h3 { font-size: 2rem; font-weight: 800; }
-.film .credits { margin: 4px 0 10px; color: var(--muted); font-style: italic; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-.chip { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--line); color: var(--muted); }
-.chip.fmt { border-color: var(--tungsten); color: var(--tungsten); }
-.times { display: flex; flex-wrap: wrap; gap: 8px; }
-.time {
-  font: 500 .95rem/1 var(--f-mono); font-variant-numeric: tabular-nums; cursor: pointer;
-  padding: 10px 14px; border: 1px solid var(--ink); background: transparent; color: var(--ink); border-radius: 2px;
-}
-.time:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); }
-.time[aria-pressed="true"] { background: var(--velvet); border-color: var(--velvet); color: var(--on-velvet); }
-.time .room { display: block; font-size: .62rem; letter-spacing: .1em; margin-top: 4px; opacity: .7; }
-
-/* Billet */
-.ticket {
-  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 84px);
-  background: var(--surface); border: 1px solid var(--line); padding: 24px;
-  mask: radial-gradient(circle 12px at 0 62%, transparent 98%, #000) , radial-gradient(circle 12px at 100% 62%, transparent 98%, #000);
-  mask-composite: intersect; -webkit-mask-composite: source-in;
-}
-.ticket h3 { font-size: 1.9rem; font-weight: 800; margin: 8px 0 4px; }
-.ticket .when { color: var(--muted); font-style: italic; margin-bottom: 18px; }
-.ticket .perf { border-top: 2px dashed var(--line); margin: 18px -24px; }
-.row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 8px; }
-.stepper { display: flex; align-items: center; gap: 10px; }
-.stepper button { width: 34px; height: 34px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; font-size: 1.1rem; border-radius: 2px; }
-.stepper output { min-width: 2ch; text-align: center; font-family: var(--f-mono); }
-.total { font-family: var(--f-display); font-weight: 800; font-size: 2.2rem; font-variant-numeric: tabular-nums; }
-.ticket .btn { width: 100%; margin-top: 14px; padding-block: 16px; }
-.ticket .btn:disabled { opacity: .4; cursor: not-allowed; }
-.note { font-size: .9rem; color: var(--muted); margin-top: 12px; }
-.confirm { margin-top: 14px; padding: 12px 14px; border-left: 3px solid var(--tungsten); background: color-mix(in srgb, var(--tungsten) 10%, transparent); font-size: .95rem; }
-@media (max-width: 960px) { .prog-layout { grid-template-columns: 1fr; } .ticket { position: static; } }
-@media (max-width: 520px) { .film { grid-template-columns: 96px 1fr; gap: 16px; } .film h3 { font-size: 1.6rem; } }
-
-/* Cycles */
-.cycles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--line); border: 1px solid var(--line); }
-.cycle { background: var(--bg); padding: 30px 26px 34px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.cycle .dates { color: var(--tungsten); }
-.cycle h3 { font-size: 2.3rem; font-weight: 900; }
-.cycle p { margin: 0; color: var(--muted); }
-.cycle ul { list-style: none; margin: auto 0 0; padding: 14px 0 0; border-top: 1px solid var(--line); display: grid; gap: 6px; }
-.cycle li { display: flex; justify-content: space-between; gap: 12px; font-size: 1rem; }
-.cycle li span:last-child { font-family: var(--f-mono); font-size: .78rem; color: var(--muted); }
-@media (max-width: 860px) { .cycles { grid-template-columns: 1fr; } }
-
-/* Filmothèque */
-.cat-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 28px; }
-.cat-tools input, .cat-tools select { padding: 11px 12px; font: 1rem var(--f-body); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 2px; }
+/* Filmothèque (affichée seulement si films.js existe) */
+.cat-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 20px; }
+.cat-tools input, .cat-tools select { padding: 10px 12px; font: .95rem var(--f-body); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 4px; }
 .cat-tools input { flex: 1 1 260px; min-width: 0; }
 .cat-tools select { flex: 0 1 auto; max-width: 100%; }
-.cat-count { margin-left: auto; color: var(--muted); }
-.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 26px 18px; }
-.cat-card { display: flex; flex-direction: column; gap: 8px; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; font: inherit; min-width: 0; }
-.cat-poster { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; display: block; background: color-mix(in srgb, var(--ink) 10%, transparent); transition: transform .25s ease, box-shadow .25s ease; }
-div.cat-poster { display: flex; align-items: flex-end; padding: 10px; font-family: var(--f-display); font-weight: 800; text-transform: uppercase; line-height: .95; color: var(--muted); }
-.cat-card:hover .cat-poster, .cat-card:focus-visible .cat-poster { transform: translateY(-4px); box-shadow: 0 18px 30px -14px rgba(0,0,0,.7); }
-.cat-t { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: 1.15rem; line-height: 1; }
-.cat-m { color: var(--muted); }
-.cat-m .star { color: var(--tungsten); }
-.cat-more { display: flex; justify-content: center; margin-top: 36px; }
-.cat-empty { padding: 28px; border: 1px dashed var(--line); color: var(--muted); }
-.cat-empty code { font-family: var(--f-mono); font-size: .9em; color: var(--ink); }
-.tmdb-credit { font-size: .85rem; }
-@media (max-width: 520px) { .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 14px; } .cat-count { margin-left: 0; } }
+.cat-count { margin-left: auto; color: var(--muted); font-size: .9rem; }
+.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 22px 10px; }
+.cat-card { display: flex; flex-direction: column; gap: 6px; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; font: inherit; min-width: 0; }
+.cat-poster { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; display: block; border-radius: 4px; background: var(--surface); transition: transform .25s ease; }
+div.cat-poster { display: flex; align-items: flex-end; padding: 10px; font-family: var(--f-display); font-weight: 800; text-transform: uppercase; color: var(--muted); }
+.cat-card:hover .cat-poster { transform: scale(1.04); }
+.cat-t { font-weight: 600; font-size: .95rem; line-height: 1.2; }
+.cat-m { color: var(--muted); font-size: .8rem; }
+.cat-more { display: flex; justify-content: center; margin-top: 30px; }
+.cat-empty { color: var(--muted); }
+@media (max-width: 520px) { .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cat-count { margin-left: 0; } }
 
-/* Fiche film */
-.film-dlg { width: min(760px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 2px; }
-.film-dlg::backdrop { background: rgba(8,2,4,.78); backdrop-filter: blur(3px); }
-.dlg-hero { position: relative; aspect-ratio: 16 / 7; background: #120609 center / cover no-repeat; }
-.dlg-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, var(--surface), transparent 70%); }
-.dlg-close { position: absolute; top: 10px; right: 10px; z-index: 1; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(0,0,0,.6); color: #fff; font-size: 1.4rem; cursor: pointer; }
-.dlg-body { display: grid; grid-template-columns: 150px 1fr; gap: 24px; padding: 0 28px 28px; margin-top: -70px; position: relative; }
-.dlg-body .poster { box-shadow: 0 20px 40px -18px rgba(0,0,0,.8); }
-.dlg-body h3 { font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 900; padding-top: 74px; }
-.dlg-orig { color: var(--muted); font-style: italic; margin: 4px 0 0; }
-.dlg-ov { margin: 14px 0; }
-.dlg-people { font-size: 1rem; color: var(--muted); margin: 0 0 4px; }
-.dlg-people b { color: var(--ink); font-weight: 500; }
-.dlg-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
-@media (max-width: 600px) { .dlg-body { grid-template-columns: 1fr; margin-top: -40px; padding: 0 18px 22px; } .dlg-body .poster { width: 120px; } .dlg-body h3 { padding-top: 0; } }
-/* Films gratuits */
-.film-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-.free-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
-.free-card { border: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; }
-.free-thumb { position: relative; aspect-ratio: 16 / 9; background: #120609; overflow: hidden; }
-.free-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.free-thumb .chip { position: absolute; top: 10px; left: 10px; background: var(--velvet); color: var(--on-velvet); border-color: var(--velvet); }
-.free-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.free-body h3 { font-size: 1.7rem; font-weight: 800; }
-.free-body p { margin: 0; color: var(--muted); font-size: 1rem; }
-.free-body > .btn, .free-body > .film-links { align-self: flex-start; margin-top: auto; }
-.free-body .film-links { padding-top: 8px; }
-.watch-frame video { width: 100%; height: 100%; display: block; background: #000; }
-.watch-dlg { width: min(1100px, calc(100% - 32px)); padding: 0; border: 1px solid var(--line); background: #000; color: #fff; border-radius: 2px; }
-.watch-dlg::backdrop { background: rgba(8,2,4,.88); backdrop-filter: blur(3px); }
+/* Fenêtre « Plus d'infos » */
+.info-dlg { width: min(850px, calc(100% - 24px)); max-height: calc(100dvh - 48px); padding: 0; border: 0; border-radius: 8px; background: var(--surface); color: var(--ink); box-shadow: 0 30px 80px rgba(0,0,0,.7); }
+.info-dlg::backdrop { background: rgba(0,0,0,.72); }
+.info-hero { position: relative; aspect-ratio: 16 / 8; overflow: hidden; background: #000; color: #fff; }
+.info-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.info-hero img.blur { filter: blur(3px) brightness(.6); transform: scale(1.06); object-position: 50% 22%; }
+.info-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, var(--surface) 0%, transparent 60%); }
+.info-hero .in { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; padding: 0 40px 28px; }
+.info-hero h3 { font-family: var(--f-display); font-weight: 900; text-transform: uppercase; font-size: clamp(2.4rem, 7vw, 4.2rem); line-height: .9; margin-bottom: 16px; color: var(--ink); text-shadow: 0 2px 20px color-mix(in srgb, var(--surface) 60%, transparent); }
+.info-hero .bb-ctas .btn.info { background: color-mix(in srgb, var(--ink) 18%, transparent); color: var(--ink); }
+:root[data-theme="light"] .info-hero .btn.play { background: #141414; color: #fff; }
+.info-body { display: grid; grid-template-columns: 2fr 1fr; gap: 28px; padding: 6px 40px 36px; }
+.info-body p { margin: 0 0 10px; }
+.info-meta { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-bottom: 12px; color: var(--muted); }
+.info-meta .match { color: #46d369; font-weight: 700; }
+.info-meta .badge { border: 1px solid var(--muted); padding: 0 6px; font-size: .8rem; border-radius: 2px; }
+.info-side { font-size: .9rem; color: var(--muted); }
+.info-side b { color: var(--ink); font-weight: 500; }
+.dlg-close { position: absolute; top: 14px; right: 14px; z-index: 3; width: 38px; height: 38px; border: 0; border-radius: 50%; background: #181818; color: #fff; font-size: 1.4rem; cursor: pointer; }
+@media (max-width: 600px) { .info-hero { aspect-ratio: 4 / 3; } .info-hero .in, .info-body { padding-inline: 18px; } .info-body { grid-template-columns: 1fr; gap: 6px; } }
+
+/* Lecteur */
+.watch-dlg { width: min(1100px, calc(100% - 32px)); padding: 0; border: 0; background: #000; color: #fff; border-radius: 4px; }
+.watch-dlg::backdrop { background: rgba(0,0,0,.9); }
 .watch-dlg .dlg-close { top: -50px; right: 0; }
 .watch-dlg[open] { overflow: visible; }
 .watch-frame { aspect-ratio: 16 / 9; width: 100%; }
-.watch-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
-.q-results li.group { display: block; cursor: default; padding: 10px 8px 4px; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-.q-results li.group:hover { background: none; }
+.watch-frame iframe, .watch-frame video { width: 100%; height: 100%; border: 0; display: block; background: #000; }
 
-/* Tarifs */
-.prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.price { border: 1px solid var(--line); padding: 28px; display: flex; flex-direction: column; gap: 10px; background: var(--surface); }
-.price.feat { background: var(--velvet); color: var(--on-velvet); border-color: var(--velvet); }
-.price.feat .label, .price.feat .fine { color: inherit; opacity: .8; }
-.price .amount { font-family: var(--f-display); font-weight: 900; font-size: 3.6rem; line-height: 1; font-variant-numeric: tabular-nums; }
-.price .amount small { font-size: 1.2rem; font-weight: 500; }
-.price .fine { color: var(--muted); font-size: 1rem; margin: 0; }
-.price ul { margin: 6px 0 0; padding-left: 1.1em; font-size: 1rem; display: grid; gap: 4px; }
-@media (max-width: 860px) { .prices { grid-template-columns: 1fr; } }
+footer { padding-block: 30px 40px; color: var(--muted); font-size: .85rem; }
+footer p { margin: 0 0 6px; }
 
-/* Lettre */
-.letter { border-top: 1px solid var(--line); }
-.letter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
-.letter h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 900; }
-.letter form { display: flex; gap: 8px; flex-wrap: wrap; }
-.letter input { flex: 1 1 220px; min-width: 0; padding: 14px; font: 1rem var(--f-body); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 2px; }
-@media (max-width: 760px) { .letter-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .dr-stem, .dr-tip { animation: none; } .dr-drop { display: none; } .tile, .tile:hover { transition: none; transform: none; } }
 
-footer { border-top: 1px solid var(--line); padding-block: 36px; color: var(--muted); }
-footer .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-footer p { margin: 0; font-size: 1rem; }
-
-/* Pages de livre : chaque section se pose comme une page tournée, les liens du menu tournent la page */
-html { scroll-padding-top: 64px; }
-body { overflow-x: clip; }
-.flip .page { transform-origin: left top; backface-visibility: hidden; transition: transform 1s cubic-bezier(.2,.7,.2,1), opacity .6s ease, filter 1s ease; }
-.flip .page:not(.turned) { transform: perspective(1800px) rotate3d(-1, 1, 0, -80deg); opacity: 0; filter: brightness(.5); }
-.flip .page.instant { transition: none; }
-::view-transition-group(root) { animation-duration: .95s; }
-::view-transition-old(root), ::view-transition-new(root) { mix-blend-mode: normal; transform-origin: left top; animation-timing-function: cubic-bezier(.55,.05,.3,1); animation-duration: .95s; }
-::view-transition-old(root) { z-index: 2; animation-name: page-lift; box-shadow: 0 0 60px rgba(0,0,0,.5); }
-::view-transition-new(root) { z-index: 1; animation-name: page-under; }
-.vt-back::view-transition-old(root) { z-index: 1; animation-name: page-under-out; box-shadow: none; }
-.vt-back::view-transition-new(root) { z-index: 2; animation-name: page-drop; box-shadow: 0 0 60px rgba(0,0,0,.5); }
-@keyframes page-lift { from { transform: perspective(1800px) rotate3d(-1, 1, 0, 0deg); } to { transform: perspective(1800px) rotate3d(-1, 1, 0, -120deg); filter: brightness(.55); } }
-@keyframes page-drop { from { transform: perspective(1800px) rotate3d(-1, 1, 0, -120deg); filter: brightness(.55); } to { transform: perspective(1800px) rotate3d(-1, 1, 0, 0deg); } }
-@keyframes page-under { from { filter: brightness(.45); } to { filter: none; } }
-@keyframes page-under-out { from { filter: none; } to { filter: brightness(.45); } }
-
-@media (prefers-reduced-motion: reduce) { .beam, .strip-track, .dr-stem, .dr-tip { animation: none; } .dr-drop { display: none; } }
-
-/* Intro d'entrée (façon Netflix) : le clic sur « Entrer » autorise le son, le logo s'allume, puis la salle apparaît. */
+/* Intro d'entrée (façon Netflix) : le clic sur « Entrer » autorise le son, le logo s'allume, puis le site apparaît. */
 html.intro-on { overflow: hidden; }
 .intro {
   position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; align-content: center; gap: 28px;
-  background: #0b0608; color: #efe8e2; text-align: center; padding: 16px;
+  background: #000; color: #fff; text-align: center; padding: 16px;
   transition: opacity .6s ease, visibility .6s;
 }
 .intro.out { opacity: 0; visibility: hidden; }
-.intro-logo { font-family: var(--f-display); font-weight: 900; font-size: clamp(4rem, 18vw, 11rem); letter-spacing: .08em; line-height: .9; color: #c23447; }
+.intro-logo { font-family: var(--f-display); font-weight: 900; font-size: clamp(4rem, 18vw, 11rem); letter-spacing: .08em; line-height: .9; color: #e50914; }
 .intro.play .intro-logo { animation: intro-zoom 2s cubic-bezier(.2,.7,.2,1) forwards; }
 .intro.play .intro-enter { opacity: 0; pointer-events: none; }
 .intro-enter {
-  font-family: var(--f-mono); font-size: .85rem; letter-spacing: .18em; text-transform: uppercase;
-  background: none; color: inherit; border: 1px solid #5f5258; padding: 12px 22px; cursor: pointer; transition: border-color .2s, opacity .3s;
+  font: 600 1rem var(--f-body); letter-spacing: .12em; text-transform: uppercase;
+  background: none; color: inherit; border: 1px solid #555; padding: 12px 26px; cursor: pointer; border-radius: 4px; transition: border-color .2s, opacity .3s;
 }
-.intro-enter:hover { border-color: #f2c879; }
+.intro-enter:hover { border-color: #fff; }
 @keyframes intro-zoom {
   0% { transform: scale(1); text-shadow: none; }
   10% { opacity: .3; } 14% { opacity: 1; } 18% { opacity: .4; } 22% { opacity: 1; }
-  40% { text-shadow: 0 0 40px rgba(194,52,71,.8); }
-  100% { transform: scale(1.6); opacity: 0; text-shadow: 0 0 80px rgba(194,52,71,.9); }
+  40% { text-shadow: 0 0 40px rgba(229,9,20,.8); }
+  100% { transform: scale(1.6); opacity: 0; text-shadow: 0 0 80px rgba(229,9,20,.9); }
 }
 @media (prefers-reduced-motion: reduce) { .intro.play .intro-logo { animation: none; } }
 </style>
 
-<div class="intro" id="intro" role="dialog" aria-label="Bienvenue au Cinéma Lumen">
+<div class="intro" id="intro" role="dialog" aria-label="Bienvenue sur Lumen">
   <div class="intro-logo" aria-hidden="true">LUMEN</div>
-  <button class="intro-enter" type="button">Entrer dans la salle</button>
+  <button class="intro-enter" type="button" data-i18n="intro.enter">Entrer</button>
 </div>
 <script>
 // Une seule fois par visite : si l'intro a déjà été vue dans cet onglet, on la retire avant l'affichage.
@@ -373,270 +273,220 @@ try {
 } catch { document.documentElement.classList.add("intro-on"); }
 </script>
 
-<header class="nav">
+<header class="nav" id="nav">
   <div class="wrap">
     <a class="logo" href="#top"><i></i>LUMEN</a>
+    <nav aria-label="Principale">
+      <a href="#top" data-i18n="nav.home">Accueil</a>
+      <a href="#films" data-i18n="nav.films">Films</a>
+      <a href="#gratuit" data-i18n="nav.free">Gratuit</a>
+      <a href="#filmotheque" id="nav-cat" hidden data-i18n="row.cat">Filmothèque</a>
+    </nav>
     <div class="search" role="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="q" type="search" placeholder="Rechercher un film…" autocomplete="off" spellcheck="false"
-             role="combobox" aria-label="Rechercher un film" aria-autocomplete="list" aria-controls="q-results" aria-expanded="false">
+      <input id="q" type="search" placeholder="Titres, réalisateurs…" data-i18n-ph="search.ph" autocomplete="off" spellcheck="false"
+             role="combobox" aria-label="Rechercher un film" data-i18n-aria="search.aria" aria-autocomplete="list" aria-controls="q-results" aria-expanded="false">
       <ul class="q-results" id="q-results" role="listbox" aria-label="Résultats" hidden></ul>
     </div>
-    <nav aria-label="Principale">
-      <a href="#programme">Programme</a>
-      <a href="#gratuit">Gratuit</a>
-      <a href="#cycles">Cycles</a>
-      <a href="#filmotheque">Filmothèque</a>
-      <a href="#tarifs">Tarifs</a>
-    </nav>
     <button class="theme-btn" type="button" id="theme-btn" aria-label="Passer en mode sombre">
       <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
     </button>
-    <a class="btn" href="#programme">Réserver</a>
+    <label class="lang-pick">
+      <span class="flag" id="lang-flag" aria-hidden="true">🇫🇷</span>
+      <select id="lang" aria-label="Langue / Language">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="ru">Русский</option>
+      </select>
+    </label>
   </div>
 </header>
 
-<section class="hero" id="top">
-  <div class="beam" aria-hidden="true"></div>
-  <div class="blood" aria-hidden="true" id="blood"></div>
-  <div class="wrap hero-grid">
-    <div>
-      <p class="label">Cinéma d'épouvante · 2 salles · 35 mm et 4K</p>
-      <h1>La peur mérite <em>le grand écran.</em></h1>
-      <p class="lede">Le meilleur de l'horreur depuis 2000 : rétrospectives, séances de minuit et films projetés dans leur format d'origine.</p>
-      <div class="ctas">
-        <a class="btn" href="#programme">Voir le programme</a>
-        <a class="btn ghost" href="#tarifs">Carte illimitée · 21 €/mois</a>
+<main>
+  <section class="billboard" id="top" aria-label="À la une" data-i18n-aria="bb.aria">
+    <div class="blood" aria-hidden="true" id="blood"></div>
+    <div class="bb-content wrap" id="billboard"></div>
+  </section>
+
+  <div class="rows">
+    <section class="row" id="films" aria-labelledby="row-films">
+      <h2 class="pad" id="row-films" data-i18n="row.trending">Tendances actuelles</h2>
+      <div class="row-wrap">
+        <button class="arrow prev" type="button" aria-label="Films précédents" data-i18n-aria="arrow.prev">‹</button>
+        <div class="track pad" id="track-films"></div>
+        <button class="arrow next" type="button" aria-label="Films suivants" data-i18n-aria="arrow.next">›</button>
       </div>
-    </div>
-    <div class="screen-card">
-      <p class="label" style="margin:0 0 10px">À l'affiche cette semaine</p>
-      <div class="screen">
-        <img src="affiches/hereditary.jpg" alt="" aria-hidden="true">
-        <span class="ratio-tag">2.00:1</span>
-        <div class="big">Hérédité</div>
-        <div class="sub">Ari Aster, 2018</div>
+    </section>
+
+    <section class="row" id="gratuit" aria-labelledby="row-free">
+      <h2 class="pad" id="row-free" data-i18n="row.free">Films gratuits</h2>
+      <div class="row-wrap">
+        <button class="arrow prev" type="button" aria-label="Films précédents" data-i18n-aria="arrow.prev">‹</button>
+        <div class="track pad" id="track-free"></div>
+        <button class="arrow next" type="button" aria-label="Films suivants" data-i18n-aria="arrow.next">›</button>
       </div>
-      <div class="screen-meta mono">
-        <span><b>127</b> min</span><span>Copie <b>DCP 4K</b></span><span><b>VOST</b></span><span>Salle <b>Varda</b></span>
+    </section>
+
+    <section class="row pad" id="filmotheque" aria-labelledby="row-cat" hidden>
+      <h2 id="row-cat" data-i18n="row.cat">Filmothèque</h2>
+      <p class="cat-empty" id="cat-intro"></p>
+      <div class="cat-tools" id="cat-tools">
+        <input id="cat-q" type="search" placeholder="Titre, réalisateur, acteur…" data-i18n-ph="cat.ph" aria-label="Filtrer la filmothèque" data-i18n-aria="cat.aria" autocomplete="off">
+        <select id="cat-year" aria-label="Année"><option value="" data-i18n="cat.years">Toutes les années</option></select>
+        <select id="cat-sort" aria-label="Trier par">
+          <option value="pop" data-i18n="cat.pop">Les plus populaires</option>
+          <option value="note" data-i18n="cat.note">Les mieux notés</option>
+          <option value="new" data-i18n="cat.new">Les plus récents</option>
+          <option value="az" data-i18n="cat.az">Titre, de A à Z</option>
+        </select>
+        <span class="cat-count" id="cat-count" aria-live="polite"></span>
       </div>
-    </div>
+      <div class="cat-grid" id="cat-grid"></div>
+      <div class="cat-more"><button class="btn info" id="cat-more" hidden data-i18n="cat.more">Afficher plus de films</button></div>
+    </section>
   </div>
-</section>
+</main>
 
-<div class="strip" aria-hidden="true">
-  <div class="strip-track" id="strip"></div>
-</div>
+<dialog class="info-dlg" id="info-dlg" aria-labelledby="info-title"></dialog>
 
-<section class="block" id="programme">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Programme</h2>
-    </div>
-    <div class="days" role="tablist" aria-label="Jour" id="days" hidden></div>
-    <div class="prog-layout">
-      <div class="films" id="films"></div>
-    </div>
-  </div>
-</section>
-
-<section class="block" id="gratuit" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Films gratuits</h2>
-      <p>À regarder chez vous, gratuitement.</p>
-    </div>
-    <div class="free-grid">
-      <article class="free-card">
-        <div class="free-thumb">
-          <img src="https://i.ytimg.com/vi/2TcdsqzUMf0/hqdefault.jpg" alt="Image du film The Nun" loading="lazy">
-          <span class="chip">Gratuit</span>
-        </div>
-        <div class="free-body">
-          <h3>The Nun</h3>
-          <p>Elle n'a jamais vraiment disparu… Épouvante, drame. Film complet en VF.</p>
-          <button class="btn" type="button" data-watch="2TcdsqzUMf0" data-title="The Nun">Voir le film</button>
-        </div>
-      </article>
-      <article class="free-card">
-        <div class="free-thumb">
-          <img src="https://i.ytimg.com/vi/o7xO_ciIEeA/hqdefault.jpg" alt="Image du film La Nuit des morts-vivants" loading="lazy">
-          <span class="chip">Gratuit · Sans pub</span>
-        </div>
-        <div class="free-body">
-          <h3>La Nuit des morts-vivants</h3>
-          <p>George A. Romero, 1968. Le film fondateur du film de zombies. Version originale, noir et blanc, 1 h 36. Domaine public.</p>
-          <div class="film-links">
-            <button class="btn" type="button" data-video="https://archive.org/download/Night.Of.The.Living.Dead_1080p/NightOfTheLivingDead_PS3.mp4" data-title="La Nuit des morts-vivants">Voir le film</button>
-            <button class="btn ghost" type="button" data-watch="o7xO_ciIEeA" data-title="La Nuit des morts-vivants – bande-annonce">Bande-annonce</button>
-          </div>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<dialog class="watch-dlg" id="watch-dlg" aria-label="Lecture du film">
-  <button class="dlg-close" type="button" aria-label="Fermer" data-close>×</button>
+<dialog class="watch-dlg" id="watch-dlg" aria-label="Lecture du film" data-i18n-aria="player.aria">
+  <button class="dlg-close" type="button" aria-label="Fermer" data-i18n-aria="close" data-close>×</button>
   <div class="watch-frame"></div>
 </dialog>
 
-<section class="block" id="cycles" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Cycles</h2>
-      <p>Chaque mois, trois lignes de programmation. Une présentation de 10 minutes avant chaque séance du jeudi.</p>
-    </div>
-    <div class="cycles">
-      <article class="cycle">
-        <span class="mono dates">01.10 → 31.10</span>
-        <h3>La nouvelle terreur</h3>
-        <p>Deuils, sectes et sorcellerie : l'horreur d'auteur qui a marqué la dernière décennie, jusqu'au soir d'Halloween.</p>
-        <ul>
-          <li><span>The Witch</span><span>2015</span></li>
-          <li><span>Hérédité</span><span>2018</span></li>
-          <li><span>Midsommar</span><span>2019</span></li>
-        </ul>
-      </article>
-      <article class="cycle">
-        <span class="mono dates">Tous les vendredis</span>
-        <h3>Frissons à la française</h3>
-        <p>La vague d'horreur française des années 2000 et ses héritières, de l'extrême au cannibale.</p>
-        <ul>
-          <li><span>À l'intérieur</span><span>2007</span></li>
-          <li><span>Martyrs</span><span>2008</span></li>
-          <li><span>Grave</span><span>2016</span></li>
-        </ul>
-      </article>
-      <article class="cycle">
-        <span class="mono dates">Samedi · 23h45</span>
-        <h3>Minuit sanglant</h3>
-        <p>La séance des insomniaques : gore, culte et déconseillé aux moins de 16 ans.</p>
-        <ul>
-          <li><span>The Descent</span><span>2005</span></li>
-          <li><span>[REC]</span><span>2007</span></li>
-          <li><span>Evil Dead</span><span>2013</span></li>
-        </ul>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="block" id="filmotheque" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Filmothèque</h2>
-      <p id="cat-intro">Tous les films d'horreur sortis depuis 2000. Cliquez sur une affiche pour voir la fiche du film.</p>
-    </div>
-    <div class="cat-tools" id="cat-tools" hidden>
-      <input id="cat-q" type="search" placeholder="Titre, réalisateur, acteur…" aria-label="Filtrer la filmothèque" autocomplete="off">
-      <select id="cat-year" aria-label="Année"><option value="">Toutes les années</option></select>
-      <select id="cat-sort" aria-label="Trier par">
-        <option value="pop">Les plus populaires</option>
-        <option value="note">Les mieux notés</option>
-        <option value="new">Les plus récents</option>
-        <option value="az">Titre, de A à Z</option>
-      </select>
-      <span class="mono cat-count" id="cat-count" aria-live="polite"></span>
-    </div>
-    <div class="cat-grid" id="cat-grid"></div>
-    <div class="cat-more"><button class="btn ghost" id="cat-more" hidden>Afficher plus de films</button></div>
-  </div>
-</section>
-
-<dialog class="film-dlg" id="film-dlg" aria-labelledby="dlg-title"></dialog>
-
-<section class="block" id="tarifs" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Tarifs</h2>
-      <p>Tarif réduit à 7 € pour les moins de 26 ans, les demandeurs d'emploi et tous les lundis.</p>
-    </div>
-    <div class="prices">
-      <div class="price">
-        <span class="label">La séance</span>
-        <div class="amount">9,50 <small>€</small></div>
-        <p class="fine">Plein tarif, toutes salles, tous formats.</p>
-      </div>
-      <div class="price feat">
-        <span class="label">Carte illimitée</span>
-        <div class="amount">21 <small>€ / mois</small></div>
-        <ul>
-          <li>Toutes les séances, sans réservation payante</li>
-          <li>Avant-premières réservées aux abonnés</li>
-          <li>Sans engagement après 3 mois</li>
-        </ul>
-      </div>
-      <div class="price">
-        <span class="label">Carnet 10 places</span>
-        <div class="amount">75 <small>€</small></div>
-        <p class="fine">Soit 7,50 € la place. Partageable, valable un an.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="block letter">
-  <div class="wrap letter-grid">
-    <div>
-      <p class="label">La feuille de cabine</p>
-      <h2>Le programme chaque mardi soir</h2>
-    </div>
-    <div>
-      <form id="news" novalidate>
-        <label for="email" class="label" style="flex-basis:100%">Votre adresse e-mail</label>
-        <input id="email" type="email" placeholder="prenom@exemple.fr" autocomplete="email" required>
-        <button class="btn" type="submit">S'inscrire</button>
-      </form>
-      <p class="note" id="news-msg">Une lettre par semaine, désinscription en un clic.</p>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <p><strong style="color:var(--ink)">Cinéma Lumen</strong> · 14 rue des Projectionnistes, Paris 5e</p>
-    <p class="mono">Caisse ouverte 30 min avant la première séance</p>
-    <p class="tmdb-credit" style="flex-basis:100%">Données et images de la Filmothèque : <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
-    <p style="flex-basis:100%">Site réalisé par <strong style="color:var(--ink)">Ara Mkrtumyan</strong></p>
-  </div>
+<footer class="wrap">
+  <p><strong style="color:var(--ink)">Lumen</strong> · <span data-i18n="foot.tag">Films d'horreur en streaming</span></p>
+  <p id="tmdb-credit" hidden>Données et images de la Filmothèque : <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+  <p><span data-i18n="foot.by">Site réalisé par</span> <strong style="color:var(--ink)">Ara Mkrtumyan</strong></p>
 </footer>
 
 <script src="films.js"></script>
 <script>
-const PRICE = 9.5, REDUCED = 7;
+const ICON_PLAY = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l15 8-15 8z"/></svg>`;
+const ICON_INFO = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.5v.5" stroke-linecap="round"/></svg>`;
+
+// Films de la plateforme. tr = bande-annonce YouTube.
 const FILMS = [
-  { id: "hereditary", tr: "lkGhK2MAljo", t: "Hérédité", d: "Ari Aster", y: 2018, min: 127, r: 2.0, fmt: "DCP 4K", v: "VOST" },
-  { id: "getout", tr: "D0_Oljr4qZM", t: "Get Out", d: "Jordan Peele", y: 2017, min: 104, r: 2.39, fmt: "DCP 4K", v: "VOST" },
-  { id: "witch", tr: "vyRMbE4kPq8", t: "The Witch", d: "Robert Eggers", y: 2015, min: 92, r: 1.66, fmt: "DCP 4K", v: "VOST" },
-  { id: "itfollows", tr: "AsoUG9ScJnc", t: "It Follows", d: "David Robert Mitchell", y: 2014, min: 100, r: 2.39, fmt: "DCP 4K", v: "VOST" },
-  { id: "descent", tr: "OSGiSZWFOtE", t: "The Descent", d: "Neil Marshall", y: 2005, min: 99, r: 2.39, fmt: "35 mm", v: "VOST" },
-  { id: "rec", tr: "S79ZZtCGNFE", t: "[REC]", d: "Jaume Balagueró et Paco Plaza", y: 2007, min: 78, r: 1.85, fmt: "35 mm", v: "VOST" },
-  { id: "morse", tr: "DbLlxfYycbc", t: "Morse", d: "Tomas Alfredson", y: 2008, min: 115, r: 2.39, fmt: "35 mm", v: "VOST" },
-  { id: "annabelle", tr: "AA2pFq9pFTA", t: "Annabelle", d: "John R. Leonetti", y: 2014, min: 99, r: 2.39, fmt: "DCP 4K", v: "VOST" },
-  { id: "grave", tr: "dNZcqVVXTcA", t: "Grave", d: "Julia Ducournau", y: 2016, min: 99, r: 2.39, fmt: "DCP 4K", v: "VF" },
+  { id: "grave", tr: "dNZcqVVXTcA", t: "Grave", d: "Julia Ducournau", y: 2016, min: 99, v: "VF", age: "16+", bg: "affiches/grave-bg.jpg",
+    tl: { en: "Raw", es: "Crudo", ru: "Сырое" },
+    syn: { fr: "Végétarienne depuis toujours, Justine entre en école vétérinaire. Un bizutage la force à goûter de la viande crue, et réveille en elle une faim nouvelle.", en: "A lifelong vegetarian, Justine starts veterinary school. A hazing ritual forces her to eat raw meat, and awakens a new hunger in her.", es: "Vegetariana de toda la vida, Justine entra en la escuela de veterinaria. Una novatada la obliga a probar carne cruda y despierta en ella un hambre nueva.", ru: "Убеждённая вегетарианка Жюстин поступает в ветеринарную школу. Обряд посвящения заставляет её попробовать сырое мясо и пробуждает в ней новый голод." } },
+  { id: "hereditary", tr: "lkGhK2MAljo", t: "Hérédité", d: "Ari Aster", y: 2018, min: 127, v: "VOST", age: "16+",
+    tl: { en: "Hereditary", es: "Hereditary", ru: "Реинкарнация" },
+    syn: { fr: "Après la mort de sa mère, Annie voit sa famille rattrapée par des secrets de plus en plus terrifiants.", en: "After her mother's death, Annie's family is haunted by secrets that grow more and more terrifying.", es: "Tras la muerte de su madre, la familia de Annie se ve acechada por secretos cada vez más aterradores.", ru: "После смерти матери семью Энни настигают всё более пугающие тайны." } },
+  { id: "getout", tr: "D0_Oljr4qZM", t: "Get Out", d: "Jordan Peele", y: 2017, min: 104, v: "VOST", age: "12+",
+    tl: { en: "Get Out", es: "¡Huye!", ru: "Прочь" },
+    syn: { fr: "Chris rend visite aux parents de sa petite amie. Leur accueil un peu trop chaleureux cache un projet glaçant.", en: "Chris visits his girlfriend's parents. Their overly warm welcome hides a chilling plan.", es: "Chris visita a los padres de su novia. Su bienvenida demasiado cálida esconde un plan escalofriante.", ru: "Крис едет знакомиться с родителями своей девушки. За их слишком радушным приёмом скрывается леденящий душу план." } },
+  { id: "witch", tr: "vyRMbE4kPq8", t: "The Witch", d: "Robert Eggers", y: 2015, min: 92, v: "VOST", age: "12+",
+    tl: { en: "The Witch", es: "La bruja", ru: "Ведьма" },
+    syn: { fr: "Nouvelle-Angleterre, 1630. Une famille de colons installée à l'orée d'une forêt est frappée par des forces maléfiques.", en: "New England, 1630. A family of settlers living at the edge of a forest is struck by evil forces.", es: "Nueva Inglaterra, 1630. Una familia de colonos que vive al borde de un bosque es atacada por fuerzas malignas.", ru: "Новая Англия, 1630 год. Семья поселенцев, живущая на краю леса, сталкивается со злыми силами." } },
+  { id: "itfollows", tr: "AsoUG9ScJnc", t: "It Follows", d: "David Robert Mitchell", y: 2014, min: 100, v: "VOST", age: "12+",
+    tl: { en: "It Follows", es: "It Follows", ru: "Оно" },
+    syn: { fr: "Après une nuit avec un garçon, Jay est suivie par une présence qui prend l'apparence d'inconnus et ne s'arrête jamais.", en: "After a night with a boy, Jay is followed by a presence that takes the shape of strangers and never stops.", es: "Tras una noche con un chico, Jay es perseguida por una presencia que adopta la forma de desconocidos y nunca se detiene.", ru: "После ночи с парнем Джей начинает преследовать нечто, принимающее облик незнакомцев, и оно никогда не останавливается." } },
+  { id: "annabelle", tr: "AA2pFq9pFTA", t: "Annabelle", d: "John R. Leonetti", y: 2014, min: 99, v: "VOST", age: "12+",
+    tl: { en: "Annabelle", es: "Annabelle", ru: "Проклятие Аннабель" },
+    syn: { fr: "Un jeune couple reçoit une poupée de collection. Après une nuit sanglante, elle devient l'hôte d'une entité maléfique.", en: "A young couple receives a vintage doll. After a bloody night, it becomes the vessel of an evil entity.", es: "Una joven pareja recibe una muñeca de colección. Tras una noche sangrienta, se convierte en el recipiente de una entidad maligna.", ru: "Молодая пара получает в подарок коллекционную куклу. После кровавой ночи в неё вселяется злая сущность." } },
+  { id: "descent", tr: "OSGiSZWFOtE", t: "The Descent", d: "Neil Marshall", y: 2005, min: 99, v: "VOST", age: "16+",
+    tl: { en: "The Descent", es: "The Descent", ru: "Спуск" },
+    syn: { fr: "Six amies explorent un réseau de grottes inconnu et découvrent qu'elles ne sont pas seules sous terre.", en: "Six friends explore an unknown cave system and discover they are not alone underground.", es: "Seis amigas exploran una red de cuevas desconocida y descubren que no están solas bajo tierra.", ru: "Шесть подруг исследуют неизвестную систему пещер и понимают, что под землёй они не одни." } },
+  { id: "rec", tr: "S79ZZtCGNFE", t: "[REC]", d: "Jaume Balagueró et Paco Plaza", y: 2007, min: 78, v: "VF", age: "16+",
+    tl: { en: "[REC]", es: "[REC]", ru: "Репортаж" },
+    syn: { fr: "Une journaliste et son caméraman suivent les pompiers dans un immeuble de Barcelone, qui est soudain mis en quarantaine.", en: "A TV reporter and her cameraman follow firefighters into a Barcelona apartment building that is suddenly quarantined.", es: "Una reportera y su cámara siguen a los bomberos a un edificio de Barcelona que de repente queda en cuarentena.", ru: "Телерепортёр и её оператор отправляются с пожарными в жилой дом в Барселоне, который внезапно закрывают на карантин." } },
+  { id: "morse", tr: "DbLlxfYycbc", t: "Morse", d: "Tomas Alfredson", y: 2008, min: 115, v: "VOST", age: "12+",
+    tl: { en: "Let the Right One In", es: "Déjame entrar", ru: "Впусти меня" },
+    syn: { fr: "Oskar, 12 ans, harcelé à l'école, se lie d'amitié avec Eli, sa mystérieuse voisine qui ne sort que la nuit.", en: "Oskar, 12, bullied at school, befriends Eli, his mysterious neighbour who only comes out at night.", es: "Oskar, de 12 años, acosado en el colegio, se hace amigo de Eli, su misteriosa vecina que solo sale de noche.", ru: "Двенадцатилетний Оскар, которого травят в школе, дружится с Эли — загадочной соседкой, выходящей только по ночам." } },
 ];
 const byId = Object.fromEntries(FILMS.map(f => [f.id, f]));
+const FEATURED = "grave";
 
-// Semaine cinéma : mercredi 21 → mardi 27 octobre 2026
-const DAYS = [
-  { k: "mer", n: 21, l: "Mercredi", s: [["hereditary","14:00","V"],["getout","16:15","L"],["hereditary","20:30","V"],["witch","21:15","L"]] },
-  { k: "jeu", n: 22, l: "Jeudi", s: [["grave","18:00","V"],["itfollows","20:45","L"],["hereditary","21:00","V"]] },
-  { k: "ven", n: 23, l: "Vendredi", s: [["morse","19:00","V"],["descent","20:30","L"],["hereditary","16:30","L"]] },
-  { k: "sam", n: 24, l: "Samedi", s: [["getout","11:00","L"],["hereditary","15:00","V"],["descent","18:00","L"],["witch","19:30","V"],["annabelle","21:45","L"],["rec","23:45","V"]] },
-  { k: "dim", n: 25, l: "Dimanche", s: [["getout","11:00","L"],["grave","14:30","V"],["itfollows","17:00","L"],["hereditary","20:30","V"]] },
-  { k: "lun", n: 26, l: "Lundi", s: [["witch","18:30","V"],["descent","20:45","L"]], reduced: true },
-  { k: "mar", n: 27, l: "Mardi", s: [["hereditary","18:00","V"],["itfollows","20:30","L"],["grave","21:00","V"]] },
+// Films gratuits : logo = l'image contient déjà le titre. play.yt = vidéo YouTube, play.video = fichier vidéo (lecteur natif, sans publicité).
+const FREE = [
+  { id: "nun", t: "The Nun", v: "VF", logo: true, img: "https://i.ytimg.com/vi/2TcdsqzUMf0/hqdefault.jpg", play: { yt: "2TcdsqzUMf0" },
+    tl: { en: "The Nun", es: "The Nun", ru: "The Nun" },
+    syn: { fr: "Elle n'a jamais vraiment disparu… Épouvante, drame. Film complet en VF.", en: "She never really went away… Horror, drama. Full film, French audio.", es: "Nunca se fue del todo… Terror, drama. Película completa en francés.", ru: "Она так и не исчезла… Ужасы, драма. Полный фильм на французском." } },
+  { id: "notld", t: "La Nuit des morts-vivants", d: "George A. Romero", y: 1968, min: 96, v: "VO", img: "affiches/notld.jpg", tr: "o7xO_ciIEeA",
+    play: { video: "https://archive.org/download/Night.Of.The.Living.Dead_1080p/NightOfTheLivingDead_PS3.mp4" },
+    tl: { en: "Night of the Living Dead", es: "La noche de los muertos vivientes", ru: "Ночь живых мертвецов" },
+    syn: { fr: "Le film fondateur du film de zombies. Des inconnus se barricadent dans une ferme pour survivre à une nuit d'horreur. Noir et blanc, domaine public.", en: "The film that founded the zombie genre. Strangers barricade themselves in a farmhouse to survive a night of horror. Black and white, public domain.", es: "La película que fundó el cine de zombis. Unos desconocidos se atrincheran en una granja para sobrevivir a una noche de horror. Blanco y negro, dominio público.", ru: "Фильм, с которого начался жанр зомби-хоррора. Незнакомцы баррикадируются на ферме, чтобы пережить ночь ужаса. Чёрно-белый, общественное достояние." } },
 ];
-const ROOMS = { V: "Salle Varda", L: "Salle Lang" };
+const freeById = Object.fromEntries(FREE.map(f => [f.id, f]));
 
-let day = 0, pick = null, qty = 2, booked = false;
+// « Lecture » des films de la plateforme : ouvre le film dans le lecteur.
+// Remplacez chaque lien par l'adresse du film (une page qui accepte d'être intégrée en iframe).
+// Un film sans lien ("") n'a que la bande-annonce.
+const WATCH_URLS = {
+  hereditary: "https://test.ru",
+  getout: "https://www.youtube.com/watch?v=VDP163X0Vwc",
+  witch: "https://test.ru",
+  itfollows: "https://test.ru",
+  descent: "https://test.ru",
+  rec: "https://test.ru",
+  morse: "https://test.ru",
+  grave: "https://test.ru",
+  annabelle: "https://test.ru",
+};
 
 const $ = s => document.querySelector(s);
-const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const euro = n => n.toFixed(2).replace(".", ",") + " €";
-const hm = m => `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, "0")}`;
+
+// Traductions de l'interface. Les titres (tl) et résumés (syn) des films sont dans FILMS et FREE.
+const I18N = {
+  fr: { "sep": " : ", "nav.home": "Accueil", "nav.films": "Films", "nav.free": "Gratuit", "search.ph": "Titres, réalisateurs…", "search.aria": "Rechercher un film",
+    "theme.dark": "Passer en mode sombre", "theme.light": "Passer en mode clair", "bb.aria": "À la une", "bb.tag": "Film",
+    "row.trending": "Tendances actuelles", "row.free": "Films gratuits", "row.cat": "Filmothèque", "arrow.prev": "Films précédents", "arrow.next": "Films suivants",
+    "play": "Lecture", "trailer": "Bande-annonce", "info": "Plus d'infos", "free": "Gratuit", "director": "Réalisation", "cast": "Avec", "genre": "Genre", "horror": "Horreur",
+    "close": "Fermer", "player.aria": "Lecture du film", "search.own": "Sur Lumen", "search.cat": "Dans la filmothèque", "search.none": "Aucun film ne correspond à « {q} ».", "unknown.dir": "Réalisation inconnue",
+    "cat.ph": "Titre, réalisateur, acteur…", "cat.aria": "Filtrer la filmothèque", "cat.years": "Toutes les années", "cat.pop": "Les plus populaires", "cat.note": "Les mieux notés", "cat.new": "Les plus récents", "cat.az": "Titre, de A à Z",
+    "cat.more": "Afficher plus de films", "cat.count1": "film", "cat.countN": "films", "cat.empty": "Aucun film ne correspond à ces filtres.", "cat.intro": "{n} films d'horreur sortis depuis {from}, avec au moins {votes} votes sur TMDB.", "cat.noov": "Pas de résumé pour ce film.", "cat.tmdb": "Fiche TMDB",
+    "foot.tag": "Films d'horreur en streaming", "foot.by": "Site réalisé par", "intro.enter": "Entrer", "intro.aria": "Bienvenue sur Lumen",
+    "h": (h, m) => `${h} h ${String(m).padStart(2, "0")}`, "VF": "VF", "VOST": "VOST", "VO": "VO" },
+  en: { "sep": ": ", "nav.home": "Home", "nav.films": "Movies", "nav.free": "Free", "search.ph": "Titles, directors…", "search.aria": "Search for a movie",
+    "theme.dark": "Switch to dark mode", "theme.light": "Switch to light mode", "bb.aria": "Featured", "bb.tag": "Film",
+    "row.trending": "Trending Now", "row.free": "Free Movies", "row.cat": "Film Library", "arrow.prev": "Previous movies", "arrow.next": "Next movies",
+    "play": "Play", "trailer": "Trailer", "info": "More Info", "free": "Free", "director": "Director", "cast": "Cast", "genre": "Genre", "horror": "Horror",
+    "close": "Close", "player.aria": "Movie player", "search.own": "On Lumen", "search.cat": "In the film library", "search.none": "No movie matches “{q}”.", "unknown.dir": "Unknown director",
+    "cat.ph": "Title, director, actor…", "cat.aria": "Filter the film library", "cat.years": "All years", "cat.pop": "Most popular", "cat.note": "Top rated", "cat.new": "Newest", "cat.az": "Title, A to Z",
+    "cat.more": "Show more movies", "cat.count1": "movie", "cat.countN": "movies", "cat.empty": "No movie matches these filters.", "cat.intro": "{n} horror movies released since {from}, with at least {votes} votes on TMDB.", "cat.noov": "No synopsis for this movie.", "cat.tmdb": "TMDB page",
+    "foot.tag": "Horror movies streaming", "foot.by": "Website by", "intro.enter": "Enter", "intro.aria": "Welcome to Lumen",
+    "h": (h, m) => `${h}h ${String(m).padStart(2, "0")}m`, "VF": "French audio", "VOST": "Subtitles", "VO": "Original" },
+  es: { "sep": ": ", "nav.home": "Inicio", "nav.films": "Películas", "nav.free": "Gratis", "search.ph": "Títulos, directores…", "search.aria": "Buscar una película",
+    "theme.dark": "Cambiar a modo oscuro", "theme.light": "Cambiar a modo claro", "bb.aria": "Destacado", "bb.tag": "Película",
+    "row.trending": "Tendencias", "row.free": "Películas gratis", "row.cat": "Filmoteca", "arrow.prev": "Películas anteriores", "arrow.next": "Películas siguientes",
+    "play": "Reproducir", "trailer": "Tráiler", "info": "Más información", "free": "Gratis", "director": "Dirección", "cast": "Reparto", "genre": "Género", "horror": "Terror",
+    "close": "Cerrar", "player.aria": "Reproductor", "search.own": "En Lumen", "search.cat": "En la filmoteca", "search.none": "Ninguna película coincide con «{q}».", "unknown.dir": "Director desconocido",
+    "cat.ph": "Título, director, actor…", "cat.aria": "Filtrar la filmoteca", "cat.years": "Todos los años", "cat.pop": "Más populares", "cat.note": "Mejor valoradas", "cat.new": "Más recientes", "cat.az": "Título, de la A a la Z",
+    "cat.more": "Mostrar más películas", "cat.count1": "película", "cat.countN": "películas", "cat.empty": "Ninguna película coincide con estos filtros.", "cat.intro": "{n} películas de terror estrenadas desde {from}, con al menos {votes} votos en TMDB.", "cat.noov": "No hay sinopsis para esta película.", "cat.tmdb": "Ficha TMDB",
+    "foot.tag": "Películas de terror en streaming", "foot.by": "Sitio creado por", "intro.enter": "Entrar", "intro.aria": "Bienvenido a Lumen",
+    "h": (h, m) => `${h} h ${String(m).padStart(2, "0")} min`, "VF": "Audio francés", "VOST": "Subtítulos", "VO": "V. original" },
+  ru: { "sep": ": ", "nav.home": "Главная", "nav.films": "Фильмы", "nav.free": "Бесплатно", "search.ph": "Названия, режиссёры…", "search.aria": "Поиск фильма",
+    "theme.dark": "Тёмная тема", "theme.light": "Светлая тема", "bb.aria": "Главное", "bb.tag": "Фильм",
+    "row.trending": "Сейчас в тренде", "row.free": "Бесплатные фильмы", "row.cat": "Фильмотека", "arrow.prev": "Предыдущие фильмы", "arrow.next": "Следующие фильмы",
+    "play": "Смотреть", "trailer": "Трейлер", "info": "Подробнее", "free": "Бесплатно", "director": "Режиссёр", "cast": "В ролях", "genre": "Жанр", "horror": "Ужасы",
+    "close": "Закрыть", "player.aria": "Плеер", "search.own": "На Lumen", "search.cat": "В фильмотеке", "search.none": "Нет фильмов по запросу «{q}».", "unknown.dir": "Режиссёр неизвестен",
+    "cat.ph": "Название, режиссёр, актёр…", "cat.aria": "Фильтр фильмотеки", "cat.years": "Все годы", "cat.pop": "Самые популярные", "cat.note": "Лучшие по оценкам", "cat.new": "Самые новые", "cat.az": "Название, от А до Я",
+    "cat.more": "Показать ещё", "cat.count1": "фильм", "cat.countN": "фильмов", "cat.empty": "Нет фильмов по этим фильтрам.", "cat.intro": "{n} фильмов ужасов с {from} года, не менее {votes} оценок на TMDB.", "cat.noov": "Нет описания для этого фильма.", "cat.tmdb": "Страница TMDB",
+    "foot.tag": "Фильмы ужасов онлайн", "foot.by": "Сайт создал", "intro.enter": "Войти", "intro.aria": "Добро пожаловать в Lumen",
+    "h": (h, m) => `${h} ч ${String(m).padStart(2, "0")} мин`, "VF": "Франц. озвучка", "VOST": "Субтитры", "VO": "Оригинал" },
+};
+const LANGS = Object.keys(I18N);
+const FLAGS = { fr: "🇫🇷", en: "🇬🇧", es: "🇪🇸", ru: "🇷🇺" };
+let lang = (() => { try { const l = localStorage.getItem("lumen-lang"); if (LANGS.includes(l)) return l; } catch {} 
+  const nav = (navigator.language || "fr").slice(0, 2); return LANGS.includes(nav) ? nav : "fr"; })();
+const t = (k, vars) => { let v = I18N[lang][k] ?? I18N.fr[k]; if (vars) for (const [a, b] of Object.entries(vars)) v = v.replace(`{${a}}`, b); return v; };
+const T = f => f.tl?.[lang] || f.t;                 // titre dans la langue choisie
+const SYNO = f => f.syn?.[lang] ?? f.syn?.fr ?? "";  // résumé dans la langue choisie
+function applyStatic() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = t(el.dataset.i18n));
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => el.placeholder = t(el.dataset.i18nPh));
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
+  $("#intro")?.setAttribute("aria-label", t("intro.aria"));
+  $("#lang").value = lang;
+  $("#lang-flag").textContent = FLAGS[lang];
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const hm = m => I18N[lang].h(Math.floor(m / 60), m % 60);
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // Sang : bande irrégulière en haut, coulures de longueurs variées, gouttes qui gonflent puis tombent
 function drawBlood() {
@@ -665,99 +515,122 @@ function drawBlood() {
     </filter></defs>
     <g filter="url(#goo)" fill="#6e050d">${band}${drips}${drops}</g></svg>`;
 }
-drawBlood();
-let bloodW = $("#blood").clientWidth;
-addEventListener("resize", () => { const w = $("#blood").clientWidth; if (Math.abs(w - bloodW) > 40) { bloodW = w; drawBlood(); } });
 
-// Bandeau pellicule
-const names = FILMS.map(f => `<span>${esc(f.t)}</span>`).join("");
-$("#strip").innerHTML = names + names;
+// Infos communes à un film de la plateforme ou un film gratuit
+const filmOf = (kind, id) => kind === "free" ? freeById[id] : byId[id];
+const posterOf = (kind, f) => kind === "free" ? f.img : `affiches/${f.id}.jpg`;
+const canPlay = (kind, f) => kind === "free" ? !!f.play : !!WATCH_URLS[f.id];
+const metaHtml = f => [
+  f.y ? `<span>${f.y}</span>` : "",
+  f.age ? `<span class="badge">${f.age}</span>` : "",
+  f.min ? `<span>${hm(f.min)}</span>` : "",
+  f.v ? `<span class="badge">${t(f.v)}</span>` : "",
+  `<span class="badge">HD</span>`,
+].join("");
+const ctasHtml = (kind, f, withInfo) => `
+  ${canPlay(kind, f) ? `<button class="btn play" type="button" data-play="${kind}:${f.id}">${ICON_PLAY}${t("play")}</button>` : ""}
+  ${f.tr ? `<button class="btn ${canPlay(kind, f) ? "info" : "play"}" type="button" data-trailer="${f.tr}" data-title="${esc(T(f))} – ${t("trailer")}">${canPlay(kind, f) ? "" : ICON_PLAY}${t("trailer")}</button>` : ""}
+  ${withInfo ? `<button class="btn info" type="button" data-info="${kind}:${f.id}">${ICON_INFO}${t("info")}</button>` : ""}`;
 
-function renderDays() {
-  $("#days").innerHTML = DAYS.map((d, i) =>
-    `<button class="day" role="tab" id="day-${d.k}" aria-selected="${i === day}" data-i="${i}">
-       <small>${d.l.slice(0, 3)}.${d.reduced ? " · réduit" : ""}</small><b>${d.n}</b></button>`).join("");
+function renderBillboard() {
+  const f = byId[FEATURED];
+  $("#top").style.setProperty("--bb", `url(${f.bg || `affiches/${f.id}.jpg`})`);
+  $("#billboard").innerHTML = `
+    <span class="bb-tag"><b>L</b>${t("bb.tag")}</span>
+    <h1>${esc(T(f))}</h1>
+    <div class="bb-meta">${metaHtml(f)}</div>
+    <p class="bb-syn">${esc(SYNO(f))}</p>
+    <div class="bb-ctas">${ctasHtml("film", f, true)}</div>`;
 }
 
-function renderFilms() {
-  const d = DAYS[day];
-  const groups = {};
-  [...d.s].sort((a, b) => a[1].localeCompare(b[1])).forEach(([id, t, room]) => (groups[id] ||= []).push([t, room]));
-  $("#films").innerHTML = Object.entries(groups).map(([id, times]) => {
-    const f = byId[id];
-    return `<article class="film" data-film="${id}">
-      <img class="poster" src="affiches/${id}.jpg" alt="Affiche de ${esc(f.t)}" loading="lazy">
-      <div class="film-body">
-        <h3>${esc(f.t)}</h3>
-        <div class="credits">${esc(f.d)}, ${f.y}</div>
-        <div class="film-links">
-          <button class="btn" type="button" data-watch="${f.tr}" data-title="${esc(f.t)} – bande-annonce">Bande-annonce HD</button>
-          ${WATCH_URLS[id] ? `<button class="btn ghost" type="button" data-where="${id}">Regarder en HD</button>` : ""}
-        </div>
-      </div>
-    </article>`;
-  }).join("");
+function renderRows() {
+  $("#track-films").innerHTML = FILMS.map(f => `
+    <button class="tile poster" type="button" data-info="film:${f.id}" aria-label="${esc(T(f))}">
+      <img src="affiches/${f.id}.jpg" alt="" loading="lazy">
+    </button>`).join("");
+  $("#track-free").innerHTML = FREE.map(f => `
+    <button class="tile wide" type="button" data-info="free:${f.id}" aria-label="${esc(T(f))}, ${t("free")}">
+      <img src="${f.img}" alt="" loading="lazy"><span class="shade"></span>
+      <span class="t-free">${t("free")}</span>${f.logo ? "" : `<span class="t-name">${esc(T(f))}</span>`}
+    </button>`).join("");
 }
 
-function renderTicket() {
-  const el = $("#ticket");
-  if (!el) return;
-  if (!pick) {
-    el.innerHTML = `<span class="label">Votre billet</span>
-      <h3>Choisissez une séance</h3>
-      <p class="when">Touchez un horaire dans le programme pour préparer votre réservation.</p>`;
-    return;
-  }
-  const f = byId[pick.id], d = DAYS[pick.day];
-  const unit = d.reduced ? REDUCED : PRICE;
-  el.innerHTML = `<span class="label">Votre billet · ${ROOMS[pick.room]}</span>
-    <h3>${esc(f.t)}</h3>
-    <p class="when">${d.l} ${d.n} octobre, ${pick.t} · fin vers ${endTime(pick.t, f.min)}</p>
-    <div class="row"><span>Places</span>
-      <div class="stepper">
-        <button type="button" id="minus" aria-label="Retirer une place">−</button>
-        <output id="qty">${qty}</output>
-        <button type="button" id="plus" aria-label="Ajouter une place">+</button>
+// Flèches des rangées
+document.querySelectorAll(".row-wrap").forEach(w => {
+  const track = w.querySelector(".track");
+  w.querySelectorAll(".arrow").forEach(a => a.addEventListener("click", () =>
+    track.scrollBy({ left: (a.classList.contains("next") ? 1 : -1) * track.clientWidth * .8, behavior: reduceMotion ? "auto" : "smooth" })));
+});
+
+// Fenêtre « Plus d'infos »
+const infoDlg = $("#info-dlg");
+let lastInfo = null;
+function openInfo(kind, id) {
+  lastInfo = [kind, id];
+  const f = filmOf(kind, id);
+  const bg = f.bg || (kind === "free" ? f.img : null);
+  infoDlg.innerHTML = `
+    <button class="dlg-close" type="button" aria-label="${t("close")}" data-close>×</button>
+    <div class="info-hero">
+      <img src="${bg || posterOf(kind, f)}" alt="" class="${bg ? "" : "blur"}">
+      <div class="in">
+        <h3 id="info-title">${esc(T(f))}</h3>
+        <div class="bb-ctas">${ctasHtml(kind, f, false)}</div>
       </div>
     </div>
-    <div class="row mono"><span>Prix unitaire${d.reduced ? " (lundi)" : ""}</span><span>${euro(unit)}</span></div>
-    <div class="perf"></div>
-    <div class="row"><span class="label">Total</span><span class="total">${euro(unit * qty)}</span></div>
-    <button class="btn" id="book" ${booked ? "disabled" : ""}>${booked ? "Places réservées" : "Réserver"}</button>
-    ${booked ? `<div class="confirm">${qty} place${qty > 1 ? "s" : ""} pour ${esc(f.t)} à ${pick.t}. Page de démonstration : aucune réservation réelle n'a été envoyée.</div>`
-             : `<p class="note">Placement libre. Les portes ouvrent 15 minutes avant.</p>`}`;
+    <div class="info-body">
+      <div>
+        <div class="info-meta">${metaHtml(f)}</div>
+        <p>${esc(SYNO(f))}</p>
+      </div>
+      <div class="info-side">
+        ${f.d ? `<p>${t("director")}${t("sep")}<b>${esc(f.d)}</b></p>` : ""}
+        <p>${t("genre")}${t("sep")}<b>${t("horror")}</b></p>
+        ${kind === "free" ? `<p><b>${t("free")}</b></p>` : ""}
+      </div>
+    </div>`;
+  if (!infoDlg.open) infoDlg.showModal();
 }
+infoDlg.addEventListener("click", e => { if (e.target === infoDlg || e.target.closest("[data-close]")) infoDlg.close(); });
 
-function endTime(t, min) {
-  const [h, m] = t.split(":").map(Number);
-  const e = (h * 60 + m + min) % 1440;
-  return `${String(Math.floor(e / 60)).padStart(2, "0")}:${String(e % 60).padStart(2, "0")}`;
+// Lecteur : YouTube intégré, page externe en iframe, ou fichier vidéo natif. Vidé à la fermeture pour couper le son.
+const watchDlg = $("#watch-dlg"), watchFrame = watchDlg.querySelector(".watch-frame");
+const ytEmbed = id => `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&vq=hd1080&modestbranding=1`;
+function play({ yt, url, video }, title) {
+  if (url) {
+    // Un lien YouTube normal (watch?v=…, youtu.be/…, shorts/…) est converti en lecteur intégré.
+    const m = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/);
+    if (m) { yt = m[1]; url = null; }
+  }
+  watchFrame.innerHTML = video
+    ? `<video src="${esc(video)}" controls autoplay playsinline preload="metadata" aria-label="${esc(title)}"></video>`
+    : `<iframe src="${esc(yt ? ytEmbed(yt) : url)}" title="${esc(title)}"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  watchDlg.showModal();
 }
+watchDlg.addEventListener("click", e => { if (e.target === watchDlg || e.target.closest("[data-close]")) watchDlg.close(); });
+watchDlg.addEventListener("close", () => { watchFrame.innerHTML = ""; });
 
 document.addEventListener("click", e => {
-  const dBtn = e.target.closest(".day");
-  if (dBtn) { day = +dBtn.dataset.i; renderDays(); renderFilms(); return; }
-  const tBtn = e.target.closest(".time");
-  if (tBtn) {
-    pick = { day, id: tBtn.dataset.id, t: tBtn.dataset.t, room: tBtn.dataset.room };
-    booked = false; renderFilms(); renderTicket(); return;
+  const info = e.target.closest("[data-info]");
+  if (info) { const [k, id] = info.dataset.info.split(":"); openInfo(k, id); return; }
+  const p = e.target.closest("[data-play]");
+  if (p) {
+    const [k, id] = p.dataset.play.split(":"), f = filmOf(k, id);
+    play(k === "free" ? f.play : { url: WATCH_URLS[id] }, T(f));
+    return;
   }
-  if (e.target.closest("#minus")) { qty = Math.max(1, qty - 1); booked = false; renderTicket(); }
-  if (e.target.closest("#plus")) { qty = Math.min(10, qty + 1); booked = false; renderTicket(); }
-  if (e.target.closest("#book")) { booked = true; renderTicket(); }
+  const tr = e.target.closest("[data-trailer]");
+  if (tr) play({ yt: tr.dataset.trailer }, tr.dataset.title);
 });
 
-$("#news").addEventListener("submit", e => {
-  e.preventDefault();
-  const v = $("#email").value.trim();
-  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-  $("#news-msg").textContent = ok
-    ? `C'est noté pour ${v}. Page de démonstration : rien n'a été envoyé.`
-    : "Cette adresse semble incomplète. Vérifiez le format, par exemple prenom@exemple.fr.";
-});
+// Navigation opaque après défilement
+const nav = $("#nav");
+const onScroll = () => nav.classList.toggle("scrolled", scrollY > 30);
+addEventListener("scroll", onScroll, { passive: true }); onScroll();
 
 // Recherche de films
-const ALIASES = { hereditary: "hereditary", morse: "let the right one in", grave: "raw", witch: "la sorciere" };
+const ALIASES = { hereditary: "hereditary", morse: "let the right one in", grave: "raw", witch: "la sorciere", notld: "night of the living dead" };
 const norm = t => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 const q = $("#q"), qList = $("#q-results");
 let qHits = [], qActive = -1;
@@ -766,38 +639,32 @@ const CAT = window.LUMEN_CATALOGUE?.films ?? [];
 const IMG = "https://image.tmdb.org/t/p/";
 const catText = c => norm(`${c.t} ${c.o} ${c.y} ${(c.dir || []).join(" ")} ${(c.cast || []).join(" ")}`);
 CAT.forEach(c => c._s = catText(c));
-const catFor = f => CAT.find(c => c.y === f.y && (norm(c.t) === norm(f.t) || norm(c.o) === norm(f.t) || norm(c.o) === (ALIASES[f.id] || "")));
-const progFor = c => FILMS.find(f => catFor(f) === c);
 
 function searchFilms() {
   const v = norm(q.value.trim());
   if (!v) { closeSearch(); return; }
-  const prog = FILMS.filter(f => norm(`${f.t} ${f.d} ${f.y} ${ALIASES[f.id] || ""}`).includes(v));
-  const inProg = new Set(prog.map(catFor));
-  const cat = CAT.filter(c => c._s.includes(v) && !inProg.has(c)).slice(0, 6);
-  qHits = [...prog.map(f => ({ f })), ...cat.map(c => ({ c }))];
+  const own = [...FILMS.map(f => ({ k: "film", f })), ...FREE.map(f => ({ k: "free", f }))]
+    .filter(({ f }) => norm(`${f.t} ${Object.values(f.tl || {}).join(" ")} ${f.d || ""} ${f.y || ""} ${ALIASES[f.id] || ""}`).includes(v));
+  const ownTitles = new Set(own.map(h => norm(h.f.t)));
+  const cat = CAT.filter(c => c._s.includes(v) && !ownTitles.has(norm(c.t))).slice(0, 6);
+  qHits = [...own, ...cat.map(c => ({ c }))];
   qActive = qHits.length ? 0 : -1;
-  const row = (h, i) => {
-    if (h.f) {
-      const days = DAYS.filter(d => d.s.some(x => x[0] === h.f.id)).map(d => d.l.slice(0, 3)).join(" · ");
-      return `<li role="option" id="q-opt-${i}" data-i="${i}" aria-selected="${i === qActive}">
-        <img src="affiches/${h.f.id}.jpg" alt="">
-        <span><b>${esc(h.f.t)}</b><span class="who">${esc(h.f.d)}, ${h.f.y}</span><span class="when">${days}</span></span></li>`;
-    }
-    const c = h.c;
-    return `<li role="option" id="q-opt-${i}" data-i="${i}" aria-selected="${i === qActive}">
-      ${c.p ? `<img src="${IMG}w92${c.p}" alt="">` : `<span></span>`}
-      <span><b>${esc(c.t)}</b><span class="who">${esc((c.dir || []).join(", ") || "Réalisation inconnue")}, ${c.y}</span></span></li>`;
-  };
+  const row = (h, i) => h.f
+    ? `<li role="option" id="q-opt-${i}" data-i="${i}" aria-selected="${i === qActive}">
+        <img src="${posterOf(h.k, h.f)}" alt="">
+        <span><b>${esc(T(h.f))}</b><span class="who">${h.k === "free" ? t("free") : esc(`${h.f.d}, ${h.f.y}`)}</span></span></li>`
+    : `<li role="option" id="q-opt-${i}" data-i="${i}" aria-selected="${i === qActive}">
+        ${h.c.p ? `<img src="${IMG}w92${h.c.p}" alt="">` : `<span></span>`}
+        <span><b>${esc(h.c.t)}</b><span class="who">${esc((h.c.dir || []).join(", ") || t("unknown.dir"))}, ${h.c.y}</span></span></li>`;
   qList.innerHTML = qHits.length
-    ? (prog.length ? `<li class="group" role="presentation">Au programme</li>` : "")
-      + qHits.map((h, i) => (h.c && i === prog.length ? `<li class="group" role="presentation">Dans la filmothèque</li>` : "") + row(h, i)).join("")
-    : `<li class="empty">Aucun film ne correspond à « ${esc(q.value.trim())} ».</li>`;
+    ? (own.length ? `<li class="group" role="presentation">${t("search.own")}</li>` : "")
+      + qHits.map((h, i) => (h.c && i === own.length ? `<li class="group" role="presentation">${t("search.cat")}</li>` : "") + row(h, i)).join("")
+    : `<li class="empty">${t("search.none", { q: esc(q.value.trim()) })}</li>`;
   qList.hidden = false;
   q.setAttribute("aria-expanded", "true");
   q.setAttribute("aria-activedescendant", qActive >= 0 ? `q-opt-${qActive}` : "");
 }
-const goToHit = h => h.f ? goToFilm(h.f) : (closeSearch(), q.blur(), openFilm(h.c));
+const goToHit = h => { closeSearch(); q.blur(); h.f ? openInfo(h.k, h.f.id) : openCat(h.c); };
 function closeSearch() { qList.hidden = true; q.setAttribute("aria-expanded", "false"); q.removeAttribute("aria-activedescendant"); qActive = -1; }
 function moveActive(step) {
   if (!qHits.length) return;
@@ -805,16 +672,6 @@ function moveActive(step) {
   qList.querySelectorAll("[role=option]").forEach((li, i) => li.setAttribute("aria-selected", i === qActive));
   q.setAttribute("aria-activedescendant", `q-opt-${qActive}`);
   $(`#q-opt-${qActive}`).scrollIntoView({ block: "nearest" });
-}
-function goToFilm(f) {
-  // Prochain jour où le film est projeté, à partir du jour affiché
-  const i = [...DAYS.keys()].map(k => (day + k) % DAYS.length).find(k => DAYS[k].s.some(x => x[0] === f.id));
-  day = i; renderDays(); renderFilms();
-  closeSearch(); q.blur();
-  const prog = $("#programme"), card = $(`[data-film="${f.id}"]`);
-  prog.classList.add("turned");
-  card.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
-  card.classList.remove("hit"); void card.offsetWidth; card.classList.add("hit");
 }
 q.addEventListener("input", searchFilms);
 q.addEventListener("focus", () => q.value.trim() && searchFilms());
@@ -828,10 +685,10 @@ qList.addEventListener("mousedown", e => e.preventDefault());
 qList.addEventListener("click", e => { const li = e.target.closest("[data-i]"); if (li) goToHit(qHits[+li.dataset.i]); });
 q.addEventListener("blur", closeSearch);
 addEventListener("keydown", e => {
-  if (e.key === "/" && !/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); }
+  if (e.key === "/" && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); }
 });
 
-// Filmothèque (données : films.js, généré par tmdb-sync.mjs)
+// Filmothèque (données : films.js, généré par tmdb-sync.mjs). Masquée tant que films.js n'existe pas.
 const STEP = 48;
 let catShown = STEP, catList = [];
 const catGrid = $("#cat-grid"), catMore = $("#cat-more");
@@ -851,70 +708,57 @@ function filterCatalogue() {
   renderCatalogue();
 }
 function renderCatalogue() {
-  $("#cat-count").textContent = `${catList.length.toLocaleString("fr-FR")} film${catList.length > 1 ? "s" : ""}`;
+  $("#cat-count").textContent = `${catList.length.toLocaleString(lang)} ${t(catList.length > 1 ? "cat.countN" : "cat.count1")}`;
   catGrid.innerHTML = catList.length ? catList.slice(0, catShown).map(c => `
     <button class="cat-card" data-cat="${c.id}">
       ${c.p ? `<img class="cat-poster" src="${IMG}w342${c.p}" alt="" loading="lazy">` : `<div class="cat-poster">${esc(c.t)}</div>`}
       <span class="cat-t">${esc(c.t)}</span>
-      <span class="cat-m mono">${c.y}${c.min ? " · " + runtime(c.min) : ""} · <span class="star">★</span> ${c.n.toFixed(1)}</span>
-    </button>`).join("") : `<p class="cat-empty">Aucun film ne correspond à ces filtres.</p>`;
+      <span class="cat-m">${c.y}${c.min ? " · " + runtime(c.min) : ""} · ★ ${c.n.toFixed(1)}</span>
+    </button>`).join("") : `<p class="cat-empty">${t("cat.empty")}</p>`;
   catMore.hidden = catShown >= catList.length;
 }
-
-function openFilm(c) {
-  const dlg = $("#film-dlg"), f = progFor(c);
-  dlg.innerHTML = `
-    <div class="dlg-hero" style="${c.b ? `background-image:url(${IMG}w780${c.b})` : ""}">
-      <button class="dlg-close" type="button" aria-label="Fermer" data-close>×</button>
-    </div>
-    <div class="dlg-body">
-      ${c.p ? `<img class="poster" src="${IMG}w342${c.p}" alt="Affiche de ${esc(c.t)}">` : `<div class="poster"></div>`}
-      <div>
-        <h3 id="dlg-title">${esc(c.t)}</h3>
-        ${norm(c.o) !== norm(c.t) ? `<p class="dlg-orig">${esc(c.o)}</p>` : ""}
-        <div class="chips" style="margin-top:12px">
-          <span class="chip fmt">★ ${c.n.toFixed(1)} · ${c.v.toLocaleString("fr-FR")} votes</span>
-          <span class="chip">${c.date ? new Date(c.date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : c.y}</span>
-          ${c.min ? `<span class="chip">${runtime(c.min)}</span>` : ""}
-          ${(c.c || []).slice(0, 3).map(x => `<span class="chip">${x}</span>`).join("")}
-        </div>
-        ${c.dir?.length ? `<p class="dlg-people">Réalisation : <b>${esc(c.dir.join(", "))}</b></p>` : ""}
-        ${c.cast?.length ? `<p class="dlg-people">Avec : <b>${esc(c.cast.join(", "))}</b></p>` : ""}
-        <p class="dlg-ov">${esc(c.ov || "Pas de résumé en français pour ce film.")}</p>
-        <div class="dlg-links">
-          ${f ? `<button class="btn" type="button" data-prog="${f.id}">Voir les séances</button>` : ""}
-          ${c.tr ? `<a class="btn${f ? " ghost" : ""}" href="https://www.youtube.com/watch?v=${c.tr}" target="_blank" rel="noopener">Bande-annonce</a>` : ""}
-          <a class="btn ghost" href="https://www.themoviedb.org/movie/${c.id}?language=fr-FR" target="_blank" rel="noopener">Fiche TMDB</a>
+function openCat(c) {
+  lastInfo = ["cat", c.id];
+  infoDlg.innerHTML = `
+    <button class="dlg-close" type="button" aria-label="${t("close")}" data-close>×</button>
+    <div class="info-hero">
+      ${c.b ? `<img src="${IMG}w780${c.b}" alt="">` : c.p ? `<img src="${IMG}w342${c.p}" alt="" class="blur">` : ""}
+      <div class="in">
+        <h3 id="info-title">${esc(c.t)}</h3>
+        <div class="bb-ctas">
+          ${c.tr ? `<button class="btn play" type="button" data-trailer="${c.tr}" data-title="${esc(c.t)} – ${t("trailer")}">${ICON_PLAY}${t("trailer")}</button>` : ""}
+          <a class="btn info" href="https://www.themoviedb.org/movie/${c.id}?language=fr-FR" target="_blank" rel="noopener">${t("cat.tmdb")}</a>
         </div>
       </div>
+    </div>
+    <div class="info-body">
+      <div>
+        <div class="info-meta"><span class="match">★ ${c.n.toFixed(1)}</span><span>${c.y}</span>${c.min ? `<span>${runtime(c.min)}</span>` : ""}</div>
+        <p>${esc(c.ov || t("cat.noov"))}</p>
+      </div>
+      <div class="info-side">
+        ${c.dir?.length ? `<p>${t("director")}${t("sep")}<b>${esc(c.dir.join(", "))}</b></p>` : ""}
+        ${c.cast?.length ? `<p>${t("cast")}${t("sep")}<b>${esc(c.cast.join(", "))}</b></p>` : ""}
+      </div>
     </div>`;
-  dlg.showModal();
+  if (!infoDlg.open) infoDlg.showModal();
 }
 
 if (CAT.length) {
   const meta = window.LUMEN_CATALOGUE;
-  $("#cat-tools").hidden = false;
-  $("#cat-intro").textContent = `${CAT.length.toLocaleString("fr-FR")} films d'horreur sortis depuis ${meta.from}, avec au moins ${meta.minVotes} votes sur TMDB. Mis à jour le ${new Date(meta.updated).toLocaleDateString("fr-FR")}.`;
+  $("#filmotheque").hidden = $("#nav-cat").hidden = $("#tmdb-credit").hidden = false;
+  $("#cat-intro").textContent = t("cat.intro", { n: CAT.length.toLocaleString(lang), from: meta.from, votes: meta.minVotes });
   [...new Set(CAT.map(c => c.y))].sort((a, b) => b - a).forEach(y => $("#cat-year").insertAdjacentHTML("beforeend", `<option>${y}</option>`));
   ["#cat-q", "#cat-year", "#cat-sort"].forEach(sel => $(sel).addEventListener("input", filterCatalogue));
   catMore.addEventListener("click", () => { catShown += STEP; renderCatalogue(); });
-  catGrid.addEventListener("click", e => { const b = e.target.closest("[data-cat]"); if (b) openFilm(CAT.find(c => c.id === +b.dataset.cat)); });
+  catGrid.addEventListener("click", e => { const b = e.target.closest("[data-cat]"); if (b) openCat(CAT.find(c => c.id === +b.dataset.cat)); });
   filterCatalogue();
-} else {
-  catGrid.innerHTML = `<p class="cat-empty">La filmothèque est vide pour l'instant. Ajoutez votre jeton TMDB dans <code>.env</code>, puis lancez <code>node tmdb-sync.mjs</code> dans le dossier du site.</p>`;
 }
-
-$("#film-dlg").addEventListener("click", e => {
-  const dlg = e.currentTarget;
-  if (e.target === dlg || e.target.closest("[data-close]")) dlg.close();
-  const p = e.target.closest("[data-prog]");
-  if (p) { dlg.close(); goToFilm(byId[p.dataset.prog]); }
-});
 
 // Bouton thème noir / blanc
 const themeBtn = $("#theme-btn");
 const syncThemeBtn = () => themeBtn.setAttribute("aria-label",
-  document.documentElement.classList.contains("is-dark") ? "Passer en mode clair" : "Passer en mode sombre");
+  t(document.documentElement.classList.contains("is-dark") ? "theme.light" : "theme.dark"));
 syncThemeBtn();
 themeBtn.addEventListener("click", () => {
   const dark = !document.documentElement.classList.contains("is-dark");
@@ -924,89 +768,23 @@ themeBtn.addEventListener("click", () => {
   syncThemeBtn();
 });
 
-// Films gratuits : le lecteur YouTube n'est chargé qu'à l'ouverture, et vidé à la fermeture pour couper le son.
-const watchDlg = $("#watch-dlg"), watchFrame = watchDlg.querySelector(".watch-frame");
-document.addEventListener("click", e => {
-  const b = e.target.closest("[data-watch]");
-  if (!b) return;
-  watchFrame.innerHTML = `<iframe src="https://www.youtube.com/embed/${b.dataset.watch}?autoplay=1&rel=0&vq=hd1080&modestbranding=1" title="${esc(b.dataset.title)}"
-    allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
-  watchDlg.showModal();
-});
-// Film hébergé hors YouTube (ex. Internet Archive) : lecteur vidéo natif, donc aucune publicité.
-document.addEventListener("click", e => {
-  const b = e.target.closest("[data-video]");
-  if (!b) return;
-  watchFrame.innerHTML = `<video src="${esc(b.dataset.video)}" controls autoplay playsinline preload="metadata" aria-label="${esc(b.dataset.title)}"></video>`;
-  watchDlg.showModal();
-});
-watchDlg.addEventListener("click", e => { if (e.target === watchDlg || e.target.closest("[data-close]")) watchDlg.close(); });
-watchDlg.addEventListener("close", () => { watchFrame.innerHTML = ""; });
-
-// « Regarder en HD » : ouvre le film dans la fenêtre-lecteur.
-// Remplacez chaque lien par l'adresse du film (une page qui accepte d'être intégrée en iframe).
-const WATCH_URLS = {
-  hereditary: "https://test.ru",
-  getout: "https://www.youtube.com/watch?v=VDP163X0Vwc",
-  witch: "https://test.ru",
-  itfollows: "https://test.ru",
-  descent: "https://test.ru",
-  rec: "https://test.ru",
-  morse: "https://test.ru",
-  grave: "https://test.ru",
-  annabelle: "https://www.youtube.com/watch?v=rgM2-2E8yuU",
-  
-};
-document.addEventListener("click", e => {
-  const b = e.target.closest("[data-where]");
-  if (!b) return;
-  const f = byId[b.dataset.where];
-  let url = WATCH_URLS[f.id];
-  if (!url) return;
-  // Un lien YouTube normal (watch?v=…, youtu.be/…, shorts/…) est converti en lecteur intégré, comme pour les films gratuits.
-  const yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/);
-  if (yt) url = `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0&vq=hd1080&modestbranding=1`;
-  watchFrame.innerHTML = `<iframe src="${esc(url)}" title="${esc(f.t)}"
-    allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
-  watchDlg.showModal();
-});
-
-// Pages de livre
-const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const pages = [...document.querySelectorAll("section.block")];
-pages.forEach(p => p.classList.add("page"));
-if (!reduceMotion && "IntersectionObserver" in window) {
-  document.documentElement.classList.add("flip");
-  const io = new IntersectionObserver(entries => entries.forEach(en => {
-    if (en.isIntersecting) { en.target.classList.add("turned"); io.unobserve(en.target); }
-  }), { rootMargin: "0px 0px -12% 0px" });
-  pages.forEach(p => io.observe(p));
+// Changement de langue : on retraduit tout, et on rafraîchit la fenêtre d'infos si elle est ouverte.
+function setLang(l) {
+  lang = l;
+  try { localStorage.setItem("lumen-lang", l); } catch {}
+  applyStatic(); renderBillboard(); renderRows(); syncThemeBtn();
+  if (CAT.length) { $("#cat-intro").textContent = t("cat.intro", { n: CAT.length.toLocaleString(lang), from: window.LUMEN_CATALOGUE.from, votes: window.LUMEN_CATALOGUE.minVotes }); renderCatalogue(); }
+  if (q.value.trim() && !qList.hidden) searchFilms();
+  if (infoDlg.open && lastInfo) lastInfo[0] === "cat" ? openCat(CAT.find(c => c.id === lastInfo[1])) : openInfo(...lastInfo);
 }
+$("#lang").addEventListener("change", e => setLang(e.target.value));
 
-document.addEventListener("click", e => {
-  const a = e.target.closest('a[href^="#"]');
-  if (!a) return;
-  const target = document.querySelector(a.getAttribute("href"));
-  if (!target) return;
-  e.preventDefault();
-  const go = () => {
-    target.classList.add("turned", "instant");
-    target.scrollIntoView({ behavior: "instant", block: "start" });
-    history.replaceState(null, "", a.hash);
-    requestAnimationFrame(() => target.classList.remove("instant"));
-  };
-  if (reduceMotion || !document.startViewTransition) {
-    target.classList.add("turned");
-    target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-    return;
-  }
-  document.documentElement.classList.toggle("vt-back", target.getBoundingClientRect().top < 0);
-  document.startViewTransition(go);
-});
-
-// État de départ : samedi, séance de 20:30… on ouvre sur la séance phare du samedi
-day = 3; pick = { day: 3, id: "hereditary", t: "15:00", room: "V" };
-renderDays(); renderFilms(); renderTicket();
+applyStatic();
+renderBillboard();
+renderRows();
+drawBlood();
+let bloodW = $("#blood").clientWidth;
+addEventListener("resize", () => { const w = $("#blood").clientWidth; if (Math.abs(w - bloodW) > 40) { bloodW = w; drawBlood(); } });
 
 // Intro d'entrée : le clic sur « Entrer » est le geste qui autorise le navigateur à jouer le son.
 (() => {

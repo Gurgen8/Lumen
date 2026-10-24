@@ -1,0 +1,3 @@
+# Clés secrètes (jeton TMDB) : ne jamais les envoyer sur GitHub
+.env
+.DS_Store
